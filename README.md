@@ -122,7 +122,7 @@ Six problems keep families, installers and cities from closing the gap:
 
 <br/>
 
-Silangan guides a household through six steps and serves the city from the same action.
+Silangan guides a household through six steps and serves the city from the same action. A new account starts empty: the household adds its appliances first, presses **Check my bill**, and solar results unlock only after the bill check passes.
 
 <div align="center">
   <img src="assets/pitch-deck/11.png" alt="Six steps from your appliances to a system you can actually buy." width="900"/>
@@ -134,7 +134,7 @@ Silangan guides a household through six steps and serves the city from the same 
 |---|---|---|
 | **1. Add appliances** | Drags in its appliances or starts from a typical Lucena home | Estimates daily use with duty-cycle factors |
 | **2. See your use** | Reviews the daily, monthly and yearly view | Rolls the estimate up to a monthly figure with a seasonal range |
-| **3. Check your bill** | Types in or photographs one Meralco bill | Gives a bill match score; solar results unlock only when the match is high enough |
+| **3. Check your bill** | Types in or photographs one Meralco bill, then presses Check my bill | Gives a bill match score; solar results unlock only when the match is high enough |
 | **4. Answer three roof questions** | House size, roof direction and pitch, plus shade | Shows how many panels fit |
 | **5. See the savings** | Moves a what-if slider for size, loans and prices | Sizes the system on billed use; shows cost, monthly savings, payback as a range and long-term value |
 | **6. Get it installed** | Confirms a phone number with a one-time code and picks up to 3 verified installers | Sends each consented request with a request number, then guides quotes, loans and net metering |
@@ -148,7 +148,7 @@ Silangan guides a household through six steps and serves the city from the same 
 
 <br/>
 
-**Helios, the AI that explains.** Helios answers questions in English or Filipino and suggests ways to save from the household's own appliances. It can also update the daily log from a plain sentence such as *"no aircon today"*, which the household confirms before it is saved. Helios never calculates a number itself: every figure comes from the documented calculator, and all calculations keep working when the AI is offline.
+**Helios, the AI that explains.** Helios, named after the Greek god of the sun, answers in the language the household writes in: English, Filipino or Taglish. Each day he opens Home with a short brief: yesterday's use against the usual, the month so far and the expected bill. He suggests ways to save from the household's own appliances and can update the daily log from a plain sentence such as *"no aircon today"*, which the household confirms before it is saved. Questions outside his job are politely declined. Helios never calculates a number itself: every figure comes from the documented calculator, and all calculations keep working when the AI is offline.
 
 **Track my solar, for owners.** Households that already have solar answer one question at the start and go straight to Track my solar. Each month they enter the kWh from the inverter app and the kWh exported on the Meralco bill. Silangan compares actual output with the expected output for that month's real sunlight, gives a status (Good, Watch or Check) with a likely cause, and tracks real savings against the installer's promise.
 
@@ -169,13 +169,13 @@ All screens use demo data. **[Open the clickable prototype](https://jhonlloydval
 | | |
 |---|---|
 | <img src="assets/screens/home.png" alt="Household home"/> | <img src="assets/screens/bill-check.png" alt="Bill check"/> |
-| **Home.** Where the electricity goes, the bill match score and the solar plan at a glance. | **Check your bill.** One Meralco bill confirms the estimate and unlocks solar results. |
+| **Home.** Helios's daily brief, the bill match score and the solar plan at a glance. | **Check your bill.** One Meralco bill confirms the estimate and unlocks solar results. |
 | <img src="assets/screens/solar-plan.png" alt="Solar plan"/> | <img src="assets/screens/quote-request.png" alt="Quote request"/> |
 | **See the savings.** System size, yearly generation, investment and payback. | **Get it installed.** Phone code, consent, then one request number for up to 3 installers. |
 | <img src="assets/screens/track-my-solar.png" alt="Track my solar"/> | <img src="assets/screens/helios.png" alt="Helios AI assistant"/> |
-| **Track my solar.** Monthly output checked against what was promised. | **Helios.** Explains your numbers in English or Filipino. |
+| **Track my solar.** Monthly output checked against what was promised, with the likely cause. | **Helios.** Explains your numbers in the language you write in. |
 | <img src="assets/screens/barangay-planner.png" alt="Barangay planner"/> | <img src="assets/screens/landing.png" alt="Landing page"/> |
-| **Barangay planner.** Where solar pays but adoption is low, on official PSGC boundaries. | **Landing page.** Free for households, English or Filipino. |
+| **Barangay planner.** Where solar pays but adoption is low, on official PSGC boundaries. | **Landing page.** Free for households, with a sample chat that introduces Helios. |
 
 ---
 
@@ -336,7 +336,11 @@ Silangan-PSC11/
 - **Online:** https://jhonlloydval.github.io/Silangan-PSC11/
 - **Offline:** download `index.html` and open it in any modern browser. No install or build step is needed.
 
-Tips: use **Demo as** in the top bar to switch between a household and a city planner, and the sun or moon button to switch light and dark mode.
+Tips:
+
+- **Create account** starts an empty home, so you can try every step yourself. **Log in** opens Maria's finished sample home.
+- A **guided demo** (full or quick) is offered after you create an account or log in. The **Guide** button in the top bar starts it again at any time.
+- Use **Demo as** in the top bar to switch between a household and a city planner, and the sun or moon button to switch light and dark mode.
 
 ---
 
