@@ -1952,6 +1952,463 @@ body:not(.mv-landing) .mv-progress,body:not(.mv-landing) .mv-sky{display:none}
 }
 .mv-in .mv-tilt.mv,.mv-tilt:not(.mv){transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateZ(0)}
 
+
+/* ===== round 4: journey, bill check you press, Track my solar extras ===== */
+.info.jr-i::after{display:none!important}
+.jr-journey{margin-bottom:16px}
+.jr-bar{height:6px;border-radius:4px;background:rgba(255,214,170,.1);margin:14px 0 6px;overflow:hidden}
+.jr-bar i{display:block;height:100%;background:linear-gradient(90deg,#FF5A1F,#FFC83D);border-radius:4px;transition:width .8s cubic-bezier(.16,1,.3,1)}
+.jr-list{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:8px}
+.jr-list a{display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:14px;border:1px solid var(--hairline);text-decoration:none;color:var(--text);background:rgba(255,214,170,.02);transition:border-color .2s,background .2s}
+.jr-list a:hover{border-color:rgba(255,200,61,.4)}
+.jr-list .jr-n{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font:600 13px var(--f-mono,monospace);border:1px solid var(--hairline-2,rgba(255,214,170,.2));color:var(--muted)}
+.jr-list .jr-t{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
+.jr-list li.done .jr-n{background:var(--amber);border-color:transparent;color:#1a1208}
+.jr-list li.done b{color:var(--muted);text-decoration:line-through;text-decoration-color:rgba(255,214,170,.3)}
+.jr-list li.now a{border-color:rgba(255,200,61,.55);background:rgba(255,159,28,.08);box-shadow:0 0 0 4px rgba(255,159,28,.06)}
+.jr-list li.now .jr-n{border-color:var(--amber);color:var(--amber);animation:jrPulse 1.8s ease-in-out infinite}
+.jr-list li.locked a{opacity:.55}
+@keyframes jrPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,159,28,.45)}50%{box-shadow:0 0 0 7px rgba(255,159,28,0)}}
+.jr-mini{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:6px 14px;margin:12px auto 0;padding:0;max-width:640px}
+.jr-mini li{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
+.jr-mini li span{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--hairline);font-size:11px}
+.jr-mini li.done{color:var(--text)} .jr-mini li.done span{background:var(--amber);color:#1a1208;border-color:transparent}
+.jr-mini li.now{color:var(--amber);font-weight:600} .jr-mini li.now span{border-color:var(--amber)}
+.jr-hint{display:flex;gap:10px;align-items:flex-start;border-color:rgba(255,200,61,.4);background:rgba(255,159,28,.07);margin-bottom:14px;color:var(--sun)}
+.jr-hint .small{color:var(--text)}
+.jr-next{position:sticky;bottom:16px;z-index:5;margin:18px auto 0;max-width:720px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px 12px 18px;border-radius:16px;background:rgba(30,22,14,.92);border:1px solid rgba(255,200,61,.45);box-shadow:0 18px 40px rgba(0,0,0,.45);backdrop-filter:blur(10px);animation:jrUp .5s cubic-bezier(.16,1,.3,1)}
+@keyframes jrUp{from{opacity:0;transform:translateY(16px)}}
+html[data-theme="light"] .jr-next{background:rgba(255,250,243,.95)}
+/* sample bill */
+.jr-bill{border:1px dashed rgba(159,211,255,.45);background:rgba(159,211,255,.05);border-radius:14px;padding:12px 14px}
+.jr-billgrid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:10px;margin-top:10px}
+.jr-billgrid>div{display:flex;flex-direction:column;gap:2px}
+.jr-billgrid b.num{font-size:18px}
+@media(max-width:560px){.jr-billgrid{grid-template-columns:1fr 1fr}.jr-billgrid>div:first-child{grid-column:span 2}}
+/* checking animation */
+.jr-checking{padding:28px 24px}
+.jr-orb{position:relative;width:96px;height:96px;margin:0 auto}
+.jr-orb i{position:absolute;inset:0;border-radius:50%;border:3px solid transparent;border-top-color:#FFC83D;animation:jrSpin 1.1s linear infinite}
+.jr-orb i:nth-child(2){inset:12px;border-top-color:#FF9F1C;animation-duration:1.6s;animation-direction:reverse}
+.jr-orb i:nth-child(3){inset:28px;border:none;background:radial-gradient(circle,#FFE08A,#FF9F1C 60%,transparent 70%);animation:jrBeat 1.2s ease-in-out infinite}
+@keyframes jrSpin{to{transform:rotate(360deg)}}
+@keyframes jrBeat{50%{transform:scale(.8);opacity:.7}}
+.jr-steps{list-style:none;padding:0;margin:18px auto 0;max-width:380px;display:grid;gap:10px}
+.jr-steps li{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;border:1px solid var(--hairline);opacity:.35;animation:jrStep .4s ease forwards;animation-delay:calc(var(--k)*.85s + .15s)}
+.jr-steps li>div{display:flex;flex-direction:column;flex:1}
+.jr-steps .jr-ic{color:var(--sun)}
+.jr-steps .jr-tick{color:var(--volt);opacity:0;transform:scale(.4);animation:jrTick .35s ease forwards;animation-delay:calc(var(--k)*.85s + .8s)}
+@keyframes jrStep{to{opacity:1;border-color:rgba(255,200,61,.4)}}
+@keyframes jrTick{to{opacity:1;transform:none}}
+.jr-reveal{animation:jrReveal .9s cubic-bezier(.16,1,.3,1)}
+@keyframes jrReveal{from{opacity:0;transform:scale(.96) translateY(10px);filter:blur(6px)}}
+/* unlock celebration */
+.jr-win{position:fixed;inset:0;z-index:300;display:grid;place-items:center;background:rgba(10,7,4,0);transition:background .4s;padding:16px}
+.jr-win.on{background:rgba(10,7,4,.72)}
+.jr-rays{position:absolute;left:50%;top:50%;width:160vmax;height:160vmax;transform:translate(-50%,-50%) scale(.2);opacity:0;background:repeating-conic-gradient(from 0deg,rgba(255,200,61,.16) 0 6deg,transparent 6deg 18deg);border-radius:50%;-webkit-mask:radial-gradient(circle,#000 0,transparent 60%);mask:radial-gradient(circle,#000 0,transparent 60%);transition:transform 1.4s cubic-bezier(.16,1,.3,1),opacity .6s}
+.jr-win.on .jr-rays{transform:translate(-50%,-50%) scale(1) rotate(25deg);opacity:1}
+.jr-wincard{position:relative;max-width:420px;text-align:center;padding:30px 28px;border-radius:24px;background:linear-gradient(180deg,rgba(40,28,16,.96),rgba(22,16,10,.96));border:1px solid rgba(255,200,61,.5);box-shadow:0 0 80px rgba(255,159,28,.35);transform:scale(.85) translateY(20px);opacity:0;transition:all .6s cubic-bezier(.16,1,.3,1) .1s}
+.jr-win.on .jr-wincard{transform:none;opacity:1}
+.jr-wincard h2{font-size:34px;margin:12px 0 8px}
+.jr-wincard p{color:var(--muted);margin-bottom:18px}
+.jr-sun{width:74px;height:74px;margin:0 auto 14px;border-radius:50%;background:radial-gradient(circle at 50% 45%,#FFF2C2,#FFC83D 40%,#FF7A1F 75%);box-shadow:0 0 60px rgba(255,180,60,.8);animation:jrRise 1.2s cubic-bezier(.16,1,.3,1)}
+@keyframes jrRise{from{transform:translateY(30px) scale(.6);opacity:0}}
+html[data-theme="light"] .jr-wincard{background:#FFFAF3}
+/* Track my solar */
+.jr-two{margin-bottom:16px}
+.jr-sunvs,.jr-pbars{display:flex;align-items:flex-end;gap:18px;margin-top:14px;flex-wrap:wrap}
+.jr-sunvs>div,.jr-pbars>div:not(.jr-leg){display:flex;flex-direction:column;align-items:center;gap:4px}
+.jr-pair{display:flex;align-items:flex-end;gap:4px;height:64px}
+.jr-pair.wide{height:94px}
+.jr-pair i,.jr-leg i{display:inline-block;width:14px;border-radius:4px 4px 0 0}
+.jr-pair.wide i{width:20px}
+.jr-pair i{transform-origin:bottom;animation:jrGrow .8s cubic-bezier(.16,1,.3,1)}
+@keyframes jrGrow{from{transform:scaleY(0)}}
+i.s{background:rgba(159,211,255,.75)} i.o{background:#FF9F1C} i.p{background:rgba(255,214,170,.28);outline:1px dashed rgba(255,214,170,.5)} i.a{background:linear-gradient(180deg,#FFC83D,#FF7A1F)}
+.jr-leg{display:flex;flex-direction:column;gap:6px;margin-left:auto;align-self:center}
+.jr-leg i{height:10px;width:10px;border-radius:3px;margin-right:6px;vertical-align:middle}
+.jr-todo{margin:6px 0 0 18px;padding:0} .jr-todo li{margin:3px 0;color:var(--muted)}
+@media(max-width:900px){.jr-two{grid-template-columns:1fr!important}}
+.jr-start{max-width:720px;margin-bottom:16px}
+.jr-nextbar{margin:0 0 16px;border:1px solid rgba(255,200,61,.35);background:rgba(255,159,28,.06);border-radius:14px}
+.jr-nextbar>summary{list-style:none;display:flex;align-items:center;gap:12px;padding:10px 14px;cursor:pointer}
+.jr-nextbar>summary::-webkit-details-marker{display:none}
+.jr-nb-ic{color:var(--sun);display:inline-flex}
+.jr-nextbar .small{flex:1;min-width:0}
+.jr-nb-more{display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+.jr-nextbar[open] .jr-nb-more svg{transform:rotate(180deg)}
+.jr-steps2{list-style:none;margin:0;padding:4px 14px 12px;display:grid;gap:6px;border-top:1px solid var(--hairline)}
+.jr-steps2 li{display:flex;justify-content:space-between;gap:12px;align-items:center;padding-top:6px}
+.jr-steps2 a{display:inline-flex;gap:8px;align-items:center;color:var(--text);text-decoration:none;font-size:14px}
+.jr-steps2 a:hover{color:var(--sun)}
+@media(max-width:600px){.jr-nb-more{display:none}.jr-steps2 li{flex-direction:column;align-items:flex-start;gap:2px}}
+
+/* ===== round 5: Helios brief on Home + chat controls ===== */
+.navorb{margin:0 1px}
+.hxb{position:relative;overflow:hidden;margin-bottom:16px;padding:22px 24px;border-color:rgba(255,200,61,.35)!important;background:radial-gradient(90% 140% at 0% 0%,rgba(255,159,28,.16),transparent 55%),var(--glass)!important}
+.hxb::after{content:"";position:absolute;right:-90px;top:-90px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(255,200,61,.13),transparent 65%);pointer-events:none}
+.hxb-head{display:flex;align-items:center;justify-content:space-between;gap:12px;position:relative;z-index:1}
+.hxb-who{display:flex;align-items:center;gap:12px;min-width:0}
+.hxb-r{display:flex;align-items:center;gap:8px}
+.hxb-ib{width:34px;height:34px;flex:none;border-radius:10px;display:grid;place-items:center;border:1px solid var(--hairline-2);background:transparent;color:var(--muted);cursor:pointer}
+.hxb-ib:hover{color:var(--text);border-color:rgba(255,200,61,.5)}
+.hxb-say{font-size:21px;line-height:1.38;letter-spacing:-.02em;margin:16px 0 0;max-width:820px;font-weight:500;color:var(--text)}
+.hxb-say b{color:var(--sun);font-weight:650}
+.hxb-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px;max-width:820px}
+.hxb-stat{display:flex;flex-direction:column;gap:1px;padding:10px 12px;border-radius:14px;border:1px solid var(--hairline);background:rgba(0,0,0,.18)}
+.hxb-stat b{font-size:18px}
+.hxb-why{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px}
+.hxb-why .linkbtn{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
+.hxb-why .linkbtn:hover{color:var(--text)}
+.hxb-logs{margin-top:16px;display:flex;flex-direction:column;gap:10px}
+.hxb-loghead{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.hxb-week{display:flex;align-items:center;gap:5px}
+.hxb-week i{width:22px;height:22px;border-radius:7px;display:grid;place-items:center;font:600 9.5px var(--f-mono,monospace);font-style:normal;border:1px solid var(--hairline);color:var(--faint)}
+.hxb-week i.y{background:rgba(94,230,168,.14);border-color:rgba(94,230,168,.4);color:var(--volt)}
+.hxb-week i.t{border-color:var(--sun);color:var(--sun);animation:hxbT 1.8s ease-in-out infinite}
+.hxb-week span{margin-left:6px}
+@keyframes hxbT{50%{box-shadow:0 0 0 4px rgba(255,159,28,.15)}}
+.hxb-chips{display:flex;gap:8px;flex-wrap:wrap}
+.hxb-chip{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;border:1px solid rgba(255,200,61,.4);background:rgba(255,159,28,.05);font-size:13.5px;cursor:pointer;color:var(--text);white-space:nowrap}
+.hxb-chip svg{color:var(--sun)}
+.hxb-chip:hover{background:rgba(255,159,28,.12)}
+.hxb-chip.ghost{border-color:var(--hairline-2);background:transparent}
+.hxb-chip.done{border-color:rgba(94,230,168,.5);background:rgba(94,230,168,.1);color:var(--volt)}
+.hxb-chip.done svg{color:var(--volt)}
+.hxb-via{font:600 9.5px var(--f-mono,monospace);letter-spacing:.06em;padding:2px 6px;border-radius:6px;background:rgba(255,200,61,.14);color:var(--sun)}
+.hxb-ask{margin-top:14px;display:flex;align-items:center;gap:8px;padding:5px 5px 5px 4px;border-radius:14px;border:1px solid var(--hairline-2);background:rgba(0,0,0,.2);position:relative;z-index:1}
+.hxb-ask .input{border:0;background:transparent;box-shadow:none;flex:1;min-width:0}
+.hxb-ask .hxsend{width:36px;height:36px;flex:none}
+.hxb-inline{margin-top:12px;display:flex;flex-direction:column;gap:10px}
+.hxb-inline .hxme{align-self:flex-end}
+.hxb.min{padding:12px 16px}
+.hxb-minline{color:var(--text)}
+html[data-theme="light"] .hxb-stat,html[data-theme="light"] .hxb-ask{background:rgba(255,255,255,.7)}
+@media(max-width:700px){.hxb{padding:18px 16px}.hxb-say{font-size:18px}.hxb-stats{grid-template-columns:1fr 1fr}.hxb-stats .hxb-stat:last-child{grid-column:span 2}.hxb-stat b{font-size:16px}.hxb-r .btn .t{display:none}.hxb-minline{font-size:13px}}
+/* Helios page: chats drawer, tools, stop */
+.hxchats .t{margin-left:2px}
+@media(max-width:700px){.hxchats .t{display:none}}
+.hxh-scrim{position:fixed;inset:0;z-index:150;background:rgba(8,5,2,.55);animation:hxhF .25s ease}
+@keyframes hxhF{from{opacity:0}}
+.hxh{position:fixed;left:0;top:0;bottom:0;z-index:151;width:min(340px,86vw);padding:18px 14px;display:flex;flex-direction:column;gap:4px;overflow:auto;background:var(--bg-1);border-right:1px solid var(--hairline-2);box-shadow:24px 0 60px rgba(0,0,0,.5);animation:hxhIn .35s cubic-bezier(.16,1,.3,1)}
+@keyframes hxhIn{from{transform:translateX(-100%)}}
+.hxh-top{display:flex;align-items:center;justify-content:space-between;padding:0 4px 10px}
+.hxh-new{justify-content:center;margin-bottom:8px}
+.hxh-grp{font:500 10.5px var(--f-mono,monospace);letter-spacing:.12em;text-transform:uppercase;color:var(--faint);padding:10px 8px 4px}
+.hxh-item{display:flex;align-items:center;border-radius:10px}
+.hxh-item:hover,.hxh-item.on{background:rgba(255,214,170,.06)}
+.hxh-item.on{box-shadow:inset 2px 0 0 var(--sun)}
+.hxh-open{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:1px;border:0;background:none;padding:8px 10px;cursor:pointer;text-align:left;font-size:13.5px;color:var(--text)}
+.hxh-open span:first-child{max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hxh-del{border:0;background:none;color:var(--faint);cursor:pointer;padding:7px 9px;border-radius:8px;opacity:.6}
+.hxh-item:hover .hxh-del{opacity:1}
+.hxh-del:hover{color:var(--critical,#FF4D6D)}
+.hxh-item.del{flex-direction:column;align-items:flex-start;gap:8px;padding:10px;background:rgba(255,77,109,.08);box-shadow:inset 0 0 0 1px rgba(255,77,109,.35)}
+.hxh-danger{color:var(--critical,#FF4D6D)!important;border-color:rgba(255,77,109,.45)!important}
+.hxh-foot{margin-top:auto;padding:14px 6px 0;line-height:1.45}
+.hxfrom{display:block;align-self:flex-end;text-align:right;font:500 10px var(--f-mono,monospace);letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin:0 4px -6px}
+.hxtools{display:flex;gap:2px;margin-top:8px;opacity:.75;transition:opacity .2s}
+.hxai:hover .hxtools{opacity:1}
+.hxtb{display:inline-flex;align-items:center;gap:6px;border:0;background:none;color:var(--faint);padding:5px 7px;border-radius:8px;cursor:pointer;font-size:12px}
+.hxtb:hover{color:var(--text);background:rgba(255,214,170,.06)}
+.hxtb.on{color:var(--sun)}
+.hxfbx{margin-top:8px;padding:8px 10px;border-radius:12px;border:1px solid var(--hairline);display:flex;flex-direction:column;gap:6px}
+.hxsend.stop{background:var(--glass-2,rgba(255,214,170,.08))!important;color:var(--text)!important;box-shadow:inset 0 0 0 1px var(--hairline-2)}
+.hxsend.stop svg path{fill:currentColor}
+.shell.mini .side a.nav span.navorb{display:inline-block}
+.side a.nav.on .navorb{box-shadow:0 0 0 2px rgba(26,12,0,.35),0 0 10px rgba(255,255,255,.35)}
+.shell.mini .side a.nav[href="#ai"]{padding:10px}
+
+/* ===== guided demo ===== */
+.tr-guide{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:999px;border:1px solid rgba(255,200,61,.5);background:rgba(255,159,28,.1);color:var(--sun);font:600 13px var(--f-ui,inherit);cursor:pointer;margin-right:8px;white-space:nowrap}
+.tr-guide:hover{background:rgba(255,159,28,.2)}
+nav.lnav .tr-guide{margin-right:4px}
+@media(max-width:760px){.tr-guide span{display:none}.tr-guide{padding:0 9px}}
+.tr-ring{position:fixed;left:0;top:0;z-index:240;border-radius:16px;pointer-events:none;border:2px solid rgba(255,200,61,.95);box-shadow:0 0 0 9999px rgba(8,5,2,.58),0 0 26px rgba(255,170,40,.55);transition:transform .38s cubic-bezier(.16,1,.3,1),width .38s cubic-bezier(.16,1,.3,1),height .38s cubic-bezier(.16,1,.3,1)}
+.tr-ring::after{content:"";position:absolute;inset:-7px;border-radius:20px;border:2px solid rgba(255,200,61,.5);animation:trPing 1.8s ease-out infinite}
+@keyframes trPing{from{opacity:.9;transform:scale(.98)}to{opacity:0;transform:scale(1.04)}}
+.tr-shade{position:fixed;inset:0;z-index:240;background:rgba(8,5,2,.5);pointer-events:none}
+.tr-card{position:fixed;z-index:260;width:370px;max-width:calc(100vw - 24px);padding:16px 16px 12px;border-radius:18px;background:linear-gradient(180deg,rgba(38,27,16,.98),rgba(24,17,10,.98));border:1px solid rgba(255,200,61,.45);box-shadow:0 24px 60px rgba(0,0,0,.55),0 0 0 1px rgba(0,0,0,.3);color:var(--text);transition:left .38s cubic-bezier(.16,1,.3,1),top .38s cubic-bezier(.16,1,.3,1);animation:trIn .35s cubic-bezier(.16,1,.3,1)}
+@keyframes trIn{from{opacity:0;transform:translateY(8px) scale(.98)}}
+.tr-card.tr-center{left:50%!important;top:50%!important;transform:translate(-50%,-50%);animation:none}
+.tr-card h3{font-size:18px;line-height:1.25;margin:10px 0 6px}
+.tr-card p{font-size:14px;line-height:1.5;color:var(--muted)}
+.tr-card p b,.tr-task b{color:var(--text)}
+.tr-top{display:flex;align-items:center;gap:8px}
+.tr-ch{font:600 11px var(--f-mono,monospace);letter-spacing:.1em;text-transform:uppercase;color:var(--amber);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tr-n{font-size:12px;color:var(--muted)}
+.tr-ib{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;border:1px solid var(--hairline);background:transparent;color:var(--muted);cursor:pointer}
+.tr-ib:hover{color:var(--text);border-color:rgba(255,200,61,.4)}
+.tr-prog{height:4px;border-radius:3px;background:rgba(255,214,170,.1);margin-top:10px;overflow:hidden}
+.tr-prog i{display:block;height:100%;background:linear-gradient(90deg,#FF5A1F,#FFC83D);transition:width .4s}
+.tr-task{display:flex;gap:10px;align-items:flex-start;margin-top:12px;padding:10px 12px;border-radius:12px;background:rgba(255,159,28,.1);border:1px solid rgba(255,200,61,.4);font-size:14px}
+.tr-task .tr-box{flex:none;width:20px;height:20px;border-radius:6px;border:2px solid var(--amber);display:grid;place-items:center;margin-top:1px;color:#1a1208}
+.tr-task.done{background:rgba(94,230,168,.1);border-color:rgba(94,230,168,.45)}
+.tr-task.done .tr-box{background:var(--volt,#5EE6A8);border-color:transparent}
+.tr-task.opt{background:rgba(255,214,170,.04);border-style:dashed;border-color:var(--hairline-2,rgba(255,214,170,.2))}
+.tr-task.opt .tr-box{border:none;color:var(--sun)}
+.tr-task:not(.done):not(.opt){animation:trNudge 2.4s ease-in-out infinite}
+@keyframes trNudge{50%{box-shadow:0 0 0 4px rgba(255,159,28,.12)}}
+.tr-morebtn{display:flex;align-items:center;gap:6px;margin-top:10px;background:none;border:none;color:var(--amber);font-size:13px;cursor:pointer;padding:4px 0}
+.tr-chev{display:inline-flex}
+.tr-more{margin-top:4px;padding:10px 12px;border-radius:12px;background:rgba(255,214,170,.05);border:1px solid var(--hairline);font-size:13px;line-height:1.55;color:var(--muted);max-height:38vh;overflow:auto}
+.tr-more b{color:var(--text)}
+.tr-foot{display:flex;align-items:center;gap:8px;margin-top:14px}
+.tr-sp{flex:1}
+.tr-foot .btn[disabled]{opacity:.55;cursor:not-allowed}
+.tr-glow{animation:trGlow 1.4s ease-in-out infinite}
+@keyframes trGlow{50%{box-shadow:0 0 0 5px rgba(255,159,28,.25)}}
+.tr-keys{margin-top:8px;text-align:right}
+.tr-menu{margin-top:10px;padding:8px;border-radius:12px;border:1px solid var(--hairline);background:rgba(0,0,0,.2);display:grid;gap:2px;max-height:46vh;overflow:auto}
+.tr-menu>b{padding:2px 6px 6px}
+.tr-menu button,.tr-chs button{display:flex;gap:10px;align-items:center;text-align:left;padding:7px 8px;border-radius:8px;border:none;background:none;color:var(--text);font-size:13px;cursor:pointer}
+.tr-menu button:hover,.tr-chs button:hover{background:rgba(255,159,28,.1)}
+.tr-menu button.on{background:rgba(255,159,28,.14);color:var(--sun)}
+.tr-menu .num,.tr-chs .num{width:18px;color:var(--muted);font-size:12px}
+.tr-modes{border-top:1px solid var(--hairline);margin-top:4px;padding-top:4px}
+.tr-modes button{color:var(--amber)}
+.tr-away{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;margin-bottom:8px;border-radius:10px;background:rgba(255,159,28,.1);border:1px solid rgba(255,200,61,.35)}
+/* phone: the card sits at the bottom of the screen */
+.tr-card.tr-mob{left:8px!important;right:8px;top:auto!important;bottom:8px;width:auto;max-width:none;max-height:54vh;overflow:auto;transform:none}
+.tr-card.tr-mob.tr-center{top:auto!important;transform:none}
+body.tr-on .chathead,body.tr-on .ch-fab{z-index:1}
+/* launcher */
+.tr-launch{position:fixed;inset:0;z-index:280;display:grid;place-items:center;padding:16px;opacity:0;transition:opacity .25s}
+.tr-launch.on{opacity:1}
+.tr-lbg{position:absolute;inset:0;background:rgba(8,5,2,.7);backdrop-filter:blur(4px)}
+.tr-lcard{position:relative;width:min(640px,100%);max-height:calc(100vh - 32px);overflow:auto;padding:28px;border-radius:24px;background:linear-gradient(180deg,rgba(40,28,16,.98),rgba(22,16,10,.98));border:1px solid rgba(255,200,61,.45);box-shadow:0 30px 80px rgba(0,0,0,.6);transform:translateY(12px) scale(.98);transition:transform .35s cubic-bezier(.16,1,.3,1)}
+.tr-launch.on .tr-lcard{transform:none}
+.tr-lcard h2{font-size:28px;margin:8px 0 6px}
+.tr-lx{position:absolute;right:16px;top:16px}
+.tr-opts{display:grid;gap:10px;margin-top:18px}
+.tr-opt{position:relative;display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;column-gap:14px;align-items:center;text-align:left;padding:14px 16px;border-radius:16px;border:1px solid var(--hairline);background:rgba(255,214,170,.03);color:var(--text);cursor:pointer;transition:border-color .2s,background .2s}
+.tr-opt:hover{border-color:rgba(255,200,61,.5);background:rgba(255,159,28,.07)}
+.tr-opt.rec{border-color:rgba(255,200,61,.55);background:rgba(255,159,28,.08)}
+.tr-opt .tr-oi{grid-row:span 2;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:rgba(255,159,28,.14);color:var(--sun)}
+.tr-opt b{font-size:16px}
+.tr-opt .recb{position:absolute;right:12px;top:12px}
+.tr-chs{margin-top:14px}
+.tr-chs summary{cursor:pointer;color:var(--amber)}
+.tr-chs>div{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:2px;margin-top:8px}
+@media(max-width:560px){.tr-lcard{padding:22px 18px}.tr-lcard h2{font-size:23px}.tr-opt .recb{position:static;grid-column:2;justify-self:start;margin-top:6px}}
+html[data-theme="light"] .tr-card,html[data-theme="light"] .tr-lcard{background:#FFFAF3}
+html[data-theme="light"] .tr-menu{background:rgba(120,70,20,.05)}
+.tr-launch[hidden],.tr-card[hidden],.tr-ring[hidden],.tr-shade[hidden]{display:none!important}
+body.tr-on.tr-pad{padding-bottom:60vh}
+.tr-card.tr-mob{max-height:46vh}
+.tr-card.tr-mob h3{font-size:16px;margin-top:8px}
+.tr-card.tr-mob p{font-size:13px}
+body.tr-pad .auth,body.tr-pad .drawer{padding-bottom:60vh}
+.tr-top{cursor:grab;user-select:none}
+.tr-card.tr-dragging{transition:none;cursor:grabbing;box-shadow:0 30px 80px rgba(0,0,0,.65),0 0 0 2px rgba(255,200,61,.6)}
+.tr-drag{display:flex;align-items:center;gap:6px;margin-top:6px;cursor:grab;user-select:none;opacity:.7}
+.tr-words{font:700 12px var(--f-ui,inherit);width:34px}
+.tr-gloss{max-height:40vh}
+.tr-g{display:flex;flex-direction:column;gap:2px;padding:7px 8px;border-radius:8px;font-size:13px;line-height:1.45}
+.tr-g b{color:var(--sun);font-size:13px} .tr-g span{color:var(--muted)}
+.tr-card.tr-min p,.tr-card.tr-min .tr-morebtn,.tr-card.tr-min .tr-more,.tr-card.tr-min .tr-keys,.tr-card.tr-min .tr-drag{display:none}
+.tr-card.tr-min h3{font-size:15px;margin:8px 0 0}
+.tr-hot{position:relative;z-index:2;animation:trHot 1.3s ease-in-out infinite!important;outline:2px solid #FFC83D!important;outline-offset:3px}
+@keyframes trHot{0%,100%{box-shadow:0 0 0 0 rgba(255,159,28,.6)}50%{box-shadow:0 0 0 10px rgba(255,159,28,0)}}
+.tr-guide.tr-pulse{animation:trGuideP 1.2s ease-in-out 5;box-shadow:0 0 0 0 rgba(255,159,28,.6)}
+@keyframes trGuideP{50%{box-shadow:0 0 0 8px rgba(255,159,28,0);background:rgba(255,159,28,.25)}}
+
+/* ===== round 6: landing how-it-works stepper ===== */
+.how2{list-style:none;margin:40px 0 0;padding:0;position:relative;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px}
+.how2-rail{position:absolute;top:17px;left:calc((100% - 70px)/12);right:calc((100% - 70px)/12);height:2px;border-radius:2px;background:rgba(255,190,90,.18);z-index:0}
+.how2-rail i{position:absolute;inset:0 auto 0 0;width:calc(var(--p)*100%);border-radius:2px;background:linear-gradient(90deg,#FFC83D,#FF9F1C);box-shadow:0 0 12px rgba(255,159,28,.55);transition:width .5s cubic-bezier(.16,1,.3,1)}
+.h2s{display:flex;min-width:0}
+.h2s button{all:unset;box-sizing:border-box;cursor:pointer;width:100%;display:flex;flex-direction:column;align-items:center;gap:14px}
+.h2n{position:relative;z-index:1;width:36px;height:36px;flex:none;border-radius:50%;display:grid;place-items:center;font:600 12px var(--f-mono);color:var(--muted);background:#1A130C;border:1.5px solid rgba(255,190,90,.35);transition:all .3s}
+.h2s.done .h2n{background:var(--sun,#FFC83D);border-color:var(--sun,#FFC83D);color:#1A0C00}
+.h2s.on .h2n{background:linear-gradient(135deg,#FFC83D,#FF9F1C);border-color:transparent;color:#1A0C00;box-shadow:0 0 0 5px rgba(255,159,28,.18),0 0 22px rgba(255,159,28,.55)}
+.h2c{width:100%;height:100%;display:flex;flex-direction:column;align-items:flex-start;text-align:left;padding:18px 16px 16px;border-radius:20px;border:1px solid var(--hairline-2);background:radial-gradient(100% 90% at 50% 0%,rgba(255,159,28,.12),transparent 70%),rgba(25,19,13,.7);transition:border-color .25s,transform .25s,box-shadow .25s}
+.h2i{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;margin-bottom:14px;color:var(--sun);background:rgba(255,159,28,.1);border:1px solid rgba(255,190,90,.28)}
+.h2c b{font-family:var(--f-head);font-size:15px;line-height:1.25;min-height:2.5em;display:block}
+.h2t{display:block;font-size:13px;line-height:1.4;color:var(--muted);margin-top:4px;flex:1}
+.h2m{display:inline-block;margin-top:12px;font:500 10.5px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.h2s button:hover .h2c{border-color:rgba(255,200,61,.45);transform:translateY(-2px)}
+.h2s button:focus-visible .h2c{outline:2px solid var(--sun);outline-offset:2px}
+.h2s.on .h2c{border-color:rgba(255,200,61,.65);background:radial-gradient(100% 90% at 50% 0%,rgba(255,159,28,.22),transparent 70%),rgba(32,22,12,.85);box-shadow:0 18px 40px -22px rgba(255,140,30,.8)}
+.h2s.on .h2i{background:rgba(255,159,28,.2);border-color:rgba(255,200,61,.6)}
+.h2s.on .h2m{color:var(--amber)}
+.how2-cap{display:none}
+/* tablet: 3 x 2 cards, number sits inside the card */
+@media(max-width:1000px){
+  .how2{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .how2-rail{display:none}
+  .h2s button{position:relative;align-items:stretch}
+  .h2n{position:absolute;top:14px;right:14px;width:28px;height:28px;font-size:11px}
+  .h2s.on .h2n{box-shadow:0 0 0 4px rgba(255,159,28,.18)}
+  .h2c b{min-height:0}
+}
+/* phone: a compact numbered stepper, details in the panel below */
+@media(max-width:720px){
+  .how2{grid-template-columns:repeat(6,minmax(0,1fr));gap:0;margin-top:28px}
+  .how2-rail{display:block;top:19px;left:calc(100%/12);right:calc(100%/12)}
+  .h2s button{align-items:center;padding:2px 0}
+  .h2n{position:relative;top:auto;right:auto;width:38px;height:38px;font-size:12px}
+  .h2c{display:none}
+  .how2-cap{display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:14px;text-align:center}
+  .how2-cap span{font:500 10.5px var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--amber)}
+  .how2-cap b{font-family:var(--f-head);font-size:18px}
+  .how2 + .how2-cap + .su-how{margin-top:14px}
+  .su-how .eyebrow,.su-how h3{display:none}
+  .su-how .cols{margin-top:0}
+}
+@media(prefers-reduced-motion:reduce){.how2-rail i,.h2c,.h2n{transition:none}}
+.landing.v2 .lnav .links a{white-space:nowrap}
+/* moving light along the steps line */
+.how2-rail{overflow:visible}
+.how2-rail i{opacity:0;transition:opacity .4s .9s,width .5s cubic-bezier(.16,1,.3,1)}
+.how2.lit .how2-rail i{opacity:1}
+.how2-glow{position:absolute;inset:0;border-radius:2px;background:linear-gradient(90deg,rgba(255,200,61,.55),rgba(255,159,28,.45),rgba(255,90,31,.4));box-shadow:0 0 10px rgba(255,159,28,.35);transform-origin:0 50%;transform:scaleX(0);transition:transform 1.6s cubic-bezier(.65,0,.35,1)}
+.how2.lit .how2-glow{transform:scaleX(1)}
+.how2.seen .how2-glow,.how2.seen .how2-rail i{transition:width .5s cubic-bezier(.16,1,.3,1)}
+.how2-dot{position:absolute;top:50%;left:0;width:90px;height:4px;margin-top:-2px;border-radius:4px;transform:translateX(-100%);opacity:0;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(255,200,61,.9));filter:drop-shadow(0 0 6px rgba(255,190,60,.9))}
+.how2-dot::after{content:"";position:absolute;right:-5px;top:50%;width:10px;height:10px;margin-top:-5px;border-radius:50%;background:#FFE08A;box-shadow:0 0 10px 3px rgba(255,216,77,.9),0 0 24px 6px rgba(255,159,28,.6)}
+.how2.lit .how2-dot{animation:how2Run 4s linear 1.6s infinite}
+@keyframes how2Run{0%{left:0;opacity:0}6%{opacity:1}94%{opacity:1}100%{left:100%;opacity:0}}
+.how2.lit .h2s:not(.on) .h2n{animation:how2Ping 4s ease-out infinite;animation-delay:calc(1.6s + var(--i)*.8s - .05s)}
+@keyframes how2Ping{0%{box-shadow:0 0 0 0 rgba(255,200,61,.7);border-color:rgba(255,200,61,.95);color:var(--text)}14%{box-shadow:0 0 0 7px rgba(255,200,61,0);border-color:rgba(255,190,90,.35)}100%{box-shadow:0 0 0 0 rgba(255,200,61,0)}}
+.how2.lit .h2s.on .h2n{animation:how2On 2.4s ease-in-out infinite}
+@keyframes how2On{50%{box-shadow:0 0 0 8px rgba(255,159,28,.12),0 0 28px rgba(255,159,28,.7)}}
+@media(max-width:720px){.how2-dot{width:50px}.how2.lit .how2-dot{animation-duration:3.2s}.how2.lit .h2s:not(.on) .h2n{animation-duration:3.2s;animation-delay:calc(1.6s + var(--i)*.64s - .05s)}}
+@media(prefers-reduced-motion:reduce){.how2-glow{transform:none;transition:none}.how2-dot{display:none}.how2 .h2n{animation:none!important}.how2-rail i{opacity:1;transition:none}}
+/* ===== Round 6 (2026-10-15): Helios = Aktis, the sun god with a crown of rays (6 moods + resting) ===== */
+.hxorb.hxa-wrap{background:none!important;box-shadow:none!important;border-radius:0;filter:none;animation:none!important;overflow:visible}
+.hxorb.hxa-wrap>svg{position:absolute;left:50%;top:50%;width:calc(var(--s)*1.4);height:calc(var(--s)*1.4);transform:translate(-50%,-50%);overflow:visible;pointer-events:none}
+.side a.nav.on .navorb.hxa-wrap{box-shadow:none!important}
+.side a.nav.on .navorb.hxa-wrap>svg{filter:drop-shadow(0 0 2px rgba(26,12,0,.55))}
+.hxa .eye,.hxa .pupil,.hxa .m-o,.hxa .m-talk,.hxa .m-big,.hxa .spark,.hxa .sweat,.hxa .dots circle,.hxa .body,.hxa .e-arc,.hxa .e-shut,.hxa .m-wavy,.hxa .m-smile,.hxa .zz{transform-box:fill-box;transform-origin:center}
+.hxa .e-arc,.hxa .e-shut,.hxa .m-o,.hxa .m-talk,.hxa .m-big,.hxa .m-wavy,.hxa .dots,.hxa .spark,.hxa .sweat,.hxa .zz{opacity:0;transition:opacity .25s}
+.hxa .eye,.hxa .m-smile{transition:opacity .25s,transform .35s cubic-bezier(.16,1,.3,1)}
+.hxa .eye{animation:hxaBlink 4.2s infinite}
+@keyframes hxaBlink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+.hxa .pupil{transition:transform .4s cubic-bezier(.16,1,.3,1)}
+.hxa .hbL,.hxa .hbR{transform-box:fill-box;transform-origin:center;transition:transform .35s cubic-bezier(.16,1,.3,1)}
+.hxa .flames,.hxa .crown{transform-box:view-box;transform-origin:100px 106px;transition:transform .5s cubic-bezier(.34,1.4,.5,1),opacity .4s}
+.hxa .flame{transform-box:view-box;transform-origin:100px 106px;animation:hxaFlick .9s ease-in-out infinite}
+@keyframes hxaFlick{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.hxa .body{animation:hxaFloat 3.4s ease-in-out infinite}
+@keyframes hxaFloat{50%{transform:translateY(-5px)}}
+@keyframes hxaHop{to{transform:translateY(-10px)}}
+/* listening: eyes wide, brows up, head tilts toward you */
+.hxa.mo-listening .eye{transform:scale(1.15);animation:none}
+.hxa.mo-listening .hbL,.hxa.mo-listening .hbR{transform:translateY(-4px)}
+.hxa.mo-listening .m-smile{opacity:0}.hxa.mo-listening .m-o{opacity:1}
+.hxa.mo-listening .body{transform:rotate(-6deg) translateY(-3px);animation:none;transition:transform .4s}
+/* thinking: looks up, one brow up, dots, calmer flames */
+.hxa.mo-thinking .pupil{transform:translate(3px,-4px)}
+.hxa.mo-thinking .hbR{transform:translateY(-4px) rotate(-8deg)}
+.hxa.mo-thinking .m-smile{opacity:0}.hxa.mo-thinking .m-o{opacity:1;transform:translateX(8px) scale(.7)}
+.hxa.mo-thinking .dots{opacity:1}
+.hxa.mo-thinking .dots circle{animation:hxaDot 1.2s infinite}
+.hxa.mo-thinking .dots circle:nth-child(2){animation-delay:.2s}.hxa.mo-thinking .dots circle:nth-child(3){animation-delay:.4s}
+@keyframes hxaDot{0%,100%{opacity:.25;transform:translateY(0)}40%{opacity:1;transform:translateY(-4px)}}
+.hxa.mo-thinking .flames{transform:scale(.93)}.hxa.mo-thinking .flame{animation-duration:1.8s}
+/* talking */
+.hxa.mo-talking .m-smile{opacity:0}.hxa.mo-talking .m-talk{opacity:1;animation:hxaTalk .32s ease-in-out infinite alternate}
+@keyframes hxaTalk{from{transform:scaleY(.35)}to{transform:scaleY(1)}}
+/* happy: crown flares, hops, sparkles */
+.hxa.mo-happy .eye{opacity:0;animation:none}.hxa.mo-happy .e-arc{opacity:1}
+.hxa.mo-happy .m-smile{opacity:0}.hxa.mo-happy .m-big{opacity:1}
+.hxa.mo-happy .hbL,.hxa.mo-happy .hbR{transform:translateY(-3px)}
+.hxa.mo-happy .crown{transform:scale(1.14)}.hxa.mo-happy .flames{transform:scale(1.1)}.hxa.mo-happy .flame{animation-duration:.45s}
+.hxa.mo-happy .body{animation:hxaHop .55s ease-in-out infinite alternate}
+.hxa.mo-happy .spark{opacity:1;animation:hxaSpark 1.1s ease-in-out infinite}
+.hxa.mo-happy .spark:nth-of-type(2){animation-delay:.3s}.hxa.mo-happy .spark:nth-of-type(3){animation-delay:.6s}
+@keyframes hxaSpark{0%,100%{transform:scale(.4) rotate(0);opacity:.2}50%{transform:scale(1.1) rotate(45deg);opacity:1}}
+/* oops: worried brows, crown slips, flames shrink, sweat drop */
+.hxa.mo-oops .eye{transform:scale(.7);animation:none}.hxa.mo-oops .pupil{transform:translate(-2px,1px)}
+.hxa.mo-oops .hbL{transform:rotate(-16deg)}.hxa.mo-oops .hbR{transform:rotate(16deg)}
+.hxa.mo-oops .m-smile{opacity:0}.hxa.mo-oops .m-wavy{opacity:1}
+.hxa.mo-oops .crown{transform:rotate(-16deg) translate(-6px,8px)}.hxa.mo-oops .flames{transform:scale(.82);opacity:.75}.hxa.mo-oops .flame{animation-duration:.22s}
+.hxa.mo-oops .sweat{opacity:1;animation:hxaSweat 1.6s ease-in infinite}
+@keyframes hxaSweat{0%{transform:translateY(-4px);opacity:0}30%{opacity:1}100%{transform:translateY(10px);opacity:0}}
+/* resting (AI offline): eyes shut, small slow flames, grey */
+.hxa.mo-rest{filter:grayscale(.7) brightness(.8)}
+.hxa.mo-rest .eye{opacity:0;animation:none}.hxa.mo-rest .e-shut{opacity:1}
+.hxa.mo-rest .flames{transform:scale(.85)}.hxa.mo-rest .flame{animation-duration:3s}
+.hxa.mo-rest .body{animation-duration:6s}
+.hxa.mo-rest .zz{opacity:1;animation:hxaZz 2.6s ease-in-out infinite}
+@keyframes hxaZz{0%{transform:translate(0,4px);opacity:0}40%{opacity:.9}100%{transform:translate(6px,-8px);opacity:0}}
+/* small sizes: calmer, no extras */
+.hxa.mini .dots,.hxa.mini .spark,.hxa.mini .sweat,.hxa.mini .zz{display:none}
+.hxa.mini .body{animation:none}
+/* chat head bubble, panel header, unlock card, guided demo */
+.chathead .bubble .hxa-wrap{margin:0}
+.chatpanel .bot.hxbot{background:none!important;box-shadow:none!important;width:auto;height:auto;display:inline-grid;place-items:center}
+.jr-wincard .hxa-wrap{display:block;margin:4px auto 18px}
+.tr-top .hxa-wrap{margin-right:4px}
+.tr-lcard .tr-lhx{display:block;margin:2px 0 14px 8px}
+.ai-note .hxa-wrap{margin:2px 4px 0 2px}
+/* glow (Lloyd 2026-10-16: strong glow everywhere, slow pulse only on the big Helios page) */
+.hxorb.hxa-wrap::before{content:"";position:absolute;inset:-35%;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(255,190,60,.34),rgba(255,120,30,.09) 50%,transparent 70%);transition:opacity .4s}
+.hxorb.hxa-wrap>svg{filter:drop-shadow(0 0 calc(var(--s)*.1) rgba(255,159,28,.55))}
+.hxorb.hxa-wrap.hxa-pulse::before{animation:hxaGlow 3.2s ease-in-out infinite}
+.hxorb.hxa-wrap.hxa-pulse>svg{filter:drop-shadow(0 0 calc(var(--s)*.13) rgba(255,159,28,.65))}
+@keyframes hxaGlow{50%{transform:scale(1.12);opacity:.7}}
+.hxorb.hxa-wrap:has(.mo-rest)::before{opacity:0}.hxorb.hxa-wrap:has(.mo-rest)>svg{filter:grayscale(.7) brightness(.8)}
+html[data-theme="light"] .hxorb.hxa-wrap::before{background:radial-gradient(circle,rgba(255,170,40,.26),rgba(255,120,30,.06) 50%,transparent 70%)}
+@media(prefers-reduced-motion:reduce){.hxa,.hxa *,.hxorb.hxa-wrap::before{animation:none!important;transition:none!important}}
+/* ===== Round 7 (2026-10-16): "Meet Helios" section on the landing page ===== */
+.lhx-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:22px;margin-top:34px;align-items:stretch}
+.lhx-stage{position:relative;border-radius:24px;border:1px solid var(--hairline);background:radial-gradient(70% 60% at 50% 38%,rgba(255,159,28,.20),transparent 70%),linear-gradient(180deg,rgba(255,214,170,.05),rgba(255,214,170,.015));padding:30px 26px 24px;display:flex;flex-direction:column;align-items:center;overflow:hidden}
+.lhx-stage::after{content:"";position:absolute;left:-10%;right:-10%;bottom:-38px;height:120px;border-radius:50%;background:radial-gradient(closest-side,rgba(255,140,40,.16),transparent);pointer-events:none}
+.lhx-hero{height:200px;display:grid;place-items:center;cursor:pointer}
+.lhx-name{margin-top:6px;text-align:center}
+.lhx-name b{font-size:22px;letter-spacing:-.02em}
+.lhx-name span{display:block;font-family:var(--f-serif);font-style:italic;color:var(--sun);font-size:16px}
+.lhx-pts{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:12px;width:100%;position:relative;z-index:1}
+.lhx-pts li{display:grid;grid-template-columns:36px minmax(0,1fr);gap:12px;align-items:start;font-size:14px;color:var(--muted)}
+.lhx-pts li b{display:block;color:var(--text);font-size:14.5px;margin-bottom:2px}
+.lhx-pts .ic{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;background:rgba(255,159,28,.1);border:1px solid rgba(255,190,90,.25);color:var(--sun)}
+.lhx-chat{border-radius:24px;border:1px solid var(--hairline);background:var(--bg-1,#14100B);display:flex;flex-direction:column;overflow:hidden;min-height:520px}
+.lhx-top{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--hairline)}
+.lhx-top b{font-size:14.5px}.lhx-top small{display:block;font-size:12px;color:var(--muted)}
+.lhx-top .lhx-dot{margin-left:auto;font:500 10.5px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+.lhx-msgs{flex:1;padding:18px;display:flex;flex-direction:column;gap:12px;justify-content:flex-end}
+.lhx-me{align-self:flex-end;max-width:78%;padding:9px 14px;border-radius:16px 16px 4px 16px;background:linear-gradient(135deg,#FFD84D,#FF9F1C);color:#1A0C00;font-size:14px;font-weight:500}
+.lhx-ai{display:flex;gap:10px;align-items:flex-start;max-width:92%}
+.lhx-ai .hxa-wrap{margin-top:4px}
+.lhx-card{padding:11px 14px;border-radius:4px 16px 16px 16px;background:rgba(255,214,170,.06);border:1px solid var(--hairline);font-size:14px;line-height:1.5;color:var(--text)}
+.lhx-card .hl{color:var(--sun);font-weight:600}
+.lhx-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.lhx-chips span{font-size:11.5px;padding:3px 9px;border-radius:999px;border:1px solid rgba(255,190,90,.35);color:var(--muted)}
+.lhx-chips span b{color:var(--sun);font-weight:600}
+.lhx-steps{display:flex;flex-direction:column;gap:5px;font-size:13px;color:var(--muted)}
+.lhx-steps i{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--amber);margin-right:8px;animation:lhxPulse .8s ease-in-out infinite alternate}
+@keyframes lhxPulse{to{opacity:.3}}
+.lhx-log .hd{font:500 10.5px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-bottom:6px}
+.lhx-log .hd.ok{color:var(--volt)}
+.lhx-log .rw{display:flex;justify-content:space-between;gap:10px;font-size:13.5px}
+.lhx-log .btns{display:flex;gap:8px;margin-top:10px}
+.lhx-log .btns span{font-size:12.5px;padding:6px 12px;border-radius:999px;border:1px solid var(--hairline-2);color:var(--muted)}
+.lhx-log .btns span.p{background:linear-gradient(135deg,#FFD84D,#FF9F1C);color:#1A0C00;border-color:transparent;font-weight:600;transition:transform .2s}
+.lhx-log .btns span.p.press{transform:scale(.92);box-shadow:0 0 0 4px rgba(255,200,61,.3)}
+.lhx-in{display:flex;align-items:center;gap:10px;margin:0 14px 14px;padding:10px 10px 10px 16px;border-radius:16px;border:1px solid var(--hairline-2);background:rgba(255,214,170,.04);font-size:14px;color:var(--faint);min-height:48px}
+.lhx-in .t{flex:1;color:var(--text)}.lhx-in .t:empty::before{content:"Ask a question, or log “no aircon today”";color:var(--faint)}
+.lhx-in .t.typing::after{content:"";display:inline-block;width:2px;height:16px;background:var(--sun);margin-left:2px;vertical-align:-3px;animation:lhxPulse .5s steps(1) infinite}
+.lhx-in .go{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#FFD84D,#FF9F1C);color:#1A0C00}
+.lhx-msgs>div{display:flex;flex-direction:column}
+.lhx-new{animation:lhxIn .35s cubic-bezier(.16,1,.3,1)}
+@keyframes lhxIn{from{opacity:0;transform:translateY(8px)}}
+.lhx-cta{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:22px}
+.lhx-cta .xs{color:var(--muted)}
+@media(max-width:900px){.lhx-grid{grid-template-columns:minmax(0,1fr)}.lhx-chat{min-height:470px}.lhx-hero{height:170px}}
+@media(max-width:520px){.lhx-msgs{padding:14px}.lhx-ai{max-width:100%}.lhx-me{max-width:88%}}
+@media(prefers-reduced-motion:reduce){.lhx-new,.lhx-steps i,.lhx-in .t.typing::after{animation:none!important}}
+.lhx-tabs{display:flex;gap:6px;padding:12px 18px 0;flex-wrap:wrap}
+.lhx-tabs button{border:1px solid var(--hairline);background:rgba(255,214,170,.04);color:var(--muted);border-radius:999px;padding:5px 12px;font:inherit;font-size:12.5px;cursor:pointer}
+.lhx-tabs button.on{border-color:rgba(255,200,61,.6);color:var(--text);background:rgba(255,159,28,.12)}
+.lhx-tools{margin-top:9px}.lhx-tools .ex{display:inline-block;font-size:12px;padding:4px 10px;border-radius:999px;border:1px solid var(--hairline-2);color:var(--muted);transition:transform .2s}
+.lhx-tools .ex.press{transform:scale(.92);border-color:rgba(255,200,61,.7);color:var(--sun)}
+@media(max-width:520px){.lhx-tabs{padding:10px 12px 0;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}.lhx-tabs button{flex:none}}
+.su-plan .badge{z-index:3}   /* keep the trial badge above the moving border light */
+@media (prefers-reduced-motion:no-preference){.lhx-chat{height:520px}.lhx-msgs{min-height:0;overflow:hidden;-webkit-mask-image:linear-gradient(transparent,#000 40px);mask-image:linear-gradient(transparent,#000 40px)}}
+@media (prefers-reduced-motion:no-preference) and (max-width:900px){.lhx-chat{height:470px}}   /* long scenes scroll up instead of growing the card */
 </style>
 <div id="app"></div><div id="toasts" class="toast-host" aria-live="polite"></div>
 <script>
@@ -4854,6 +5311,904 @@ render();
     ACT.finishOnboard=function(a){ const o=document.createElement('div'); o.className='mv-sunrise'; o.innerHTML='<b>Liwanag mula sa Silangan.</b>'; document.body.appendChild(o);
       setTimeout(()=>fin.call(this,a),520); setTimeout(()=>o.remove(),1200); }; }
   after();
+})();
+
+
+/* ===== Startup edition, round 4: a new account starts empty, the bill check is something you press, Track my solar explains itself ===== */
+(function(){
+  const clone=o=>JSON.parse(JSON.stringify(o));
+  window.infoH=t=>`<i class="info jr-i" tabindex="0" data-tt="${esc(t)}">i</i>`;
+  const SAMPLE=clone({apps:S.apps,bill:S.bill,stage:S.stage,adopted:S.adopted,nextId:S.nextId,roof:S.roof,house:S.house,shading:S.shading,size:S.size,brgy:S.brgy,log:S.log||{}});
+  const SAMPLE_BILL={start:'2026-07-28',end:'2026-08-27',kwh:426,amount:6280.26};
+  const appSig=()=>S.apps.map(a=>[a.w,a.q,a.h,a.d,a.cat].join(',')).join('|');
+  S.checked=!!S.billConfirmed; S.mapBase='sat'; S.checkSig=appSig(); S.checkLow=false; S.fresh=false;
+
+  /* ---------- sample home vs a brand-new account ---------- */
+  window.freshHome=function(){
+    Object.assign(S,{apps:[],preset:null,openApp:null,billConfirmed:false,checked:false,checkLow:false,checking:false,lowDemo:false,
+      bill:{start:SAMPLE_BILL.start,end:SAMPLE_BILL.end,kwh:'',amount:'',du:'Meralco'},billTouched:false,stage:0,qSent:[],quotesReq:[],qPending:[],
+      adopted:{},panels:null,scenarios:[],hasSolarAsked:true,fresh:true,log:{},hxLogs:[],logVia:{},drawer:null,modal:null});
+  };
+  window.loadSampleHome=function(){
+    const s=clone(SAMPLE); Object.assign(S,{apps:s.apps,bill:s.bill,stage:s.stage,adopted:s.adopted,nextId:s.nextId,roof:s.roof,house:s.house,shading:s.shading,size:s.size,brgy:s.brgy,log:s.log,
+      billConfirmed:true,checked:true,checkLow:false,checking:false,fresh:false,lowDemo:false,panels:null,authed:true,role:'household'});
+    S.checkSig=appSig();
+  };
+  // sign-up and onboarding always begin from an empty home; logging in opens the sample (returning) home
+  ACT.toOnboard=(f=>function(){ freshHome(); return f.apply(this,arguments); })(ACT.toOnboard);
+  document.addEventListener('submit',e=>{ const f=e.target.dataset&&e.target.dataset.form;
+    if(f==='register'){ const pw=document.getElementById('rgPw'), c=document.getElementById('rgC1'); if(pw&&pw.value.length>=10&&c&&c.checked) freshHome(); }
+    if(f==='login') loadSampleHome(); },true);
+  document.addEventListener('click',e=>{ const el=e.target.closest('[data-act="demo"]'); if(el&&el.dataset.arg==='household') loadSampleHome(); },true);
+  ACT.loadSample=()=>{ loadSampleHome(); toast('Sample home loaded: Family with 2 aircons, bill checked, solar unlocked.'); go('dash'); render(); };
+  ACT.startFresh=()=>{ freshHome(); toast('Empty home. Start by adding your appliances.'); go('dash'); render(); };
+  // onboarding already asks "Do you already have solar?", so the Home card doesn't ask again
+  ACT.finishOnboard=(f=>function(a){ S.hasSolarAsked=true; return f.apply(this,arguments); })(ACT.finishOnboard);
+
+  // the landing page always describes the sample family, whatever the visitor has entered
+  VIEWS.landing=(f=>function(){ if(!S.fresh&&S.checked) return f();
+    const keep={apps:S.apps,bill:S.bill,billConfirmed:S.billConfirmed,checked:S.checked,checkSig:S.checkSig,checkLow:S.checkLow,fresh:S.fresh};
+    Object.assign(S,{apps:clone(SAMPLE.apps),bill:clone(SAMPLE.bill),billConfirmed:true,checked:true,checkLow:false,fresh:false}); S.checkSig=appSig();
+    try{ return f(); } finally { Object.assign(S,keep); } })(VIEWS.landing);
+
+  // a new account has no history yet: only days the household logs itself
+  dayKwh=(f=>function(key){ if(S.fresh&&!(S.log&&S.log[key])) return null; return f(key); })(dayKwh);
+
+  /* ---------- the bill match only counts after the household presses "Check my bill" ---------- */
+  const _H6=H;
+  H=function(){ const h=_H6(); h.changed=S.checked&&S.checkLow&&appSig()!==S.checkSig;
+    if(!S.checked||h.changed){ h.conf=null; h.unlocked=false; } return h; };
+
+  function checkingCard(){ const steps=[['receipt','Reading your bill',`${fmt.n(+S.bill.kwh||0)} kWh over ${billDays()} days`],['plug','Adding up your appliances',`${S.apps.length} appliance${S.apps.length===1?'':'s'} in your home`],['spark','Scoring the match','Comparing the two numbers']];
+    return `<div class="card card-hot jr-checking" aria-live="polite"><div class="jr-orb" aria-hidden="true"><i></i><i></i><i></i></div>
+      <h3 style="font-size:22px;text-align:center;margin-top:8px">Checking your bill…</h3>
+      <ol class="jr-steps">${steps.map(([i,t,s],k)=>`<li style="--k:${k}"><span class="jr-ic">${ic(i,16)}</span><div><b class="small">${t}</b><span class="xs muted">${s}</span></div><span class="jr-tick">${ic('check2',14)}</span></li>`).join('')}</ol></div>`; }
+  function readyCard(h){ const changed=h.changed;
+    return `<div class="card jr-ready"><div class="grid" style="grid-template-columns:auto minmax(0,1fr);gap:24px;align-items:center">
+      ${ring(0,{size:150,stroke:12,center:'?',sub:'Match score'})}
+      <div><span class="chip">${ic(changed?'pulse':'receipt',13)} ${changed?'Your appliances changed':'Ready when you are'}</span>
+        <h3 style="font-size:22px;margin-top:10px">${changed?'Check your bill again':'Does your home match your bill?'}</h3>
+        <p class="muted" style="margin-top:6px">${changed?'You changed your appliances after the last check. Press <b>Check my bill</b> to see if they match now.':`You listed <b>${S.apps.length} appliance${S.apps.length===1?'':'s'}</b>. Type the kWh and amount from your bill, then press <b>Check my bill</b>. We compare your bill with our estimate from your appliances. A close match unlocks your solar plan.`}</p>
+        <p class="xs muted" style="margin-top:10px">${ic('info',12)} A match score of 60 or more unlocks solar. 80 or more is High. ${infoH('<b>Bill match score</b> = 100 × (1 − gap ÷ 50%). The gap is the difference between your billed kWh and our estimate for the same days. Source: SRS formula D.2.')}</p></div></div></div>`; }
+  function sampleBill(){ return `<div class="jr-bill" aria-label="Sample Meralco bill for the demo"><div class="row between"><b class="xs" style="letter-spacing:.12em">SAMPLE BILL · FOR THE DEMO</b><span class="xs muted">Copy these numbers</span></div>
+    <div class="jr-billgrid"><div><span class="xs muted">Billing period</span><b class="num" style="font-size:14px">Jul 28 – Aug 27, 2026</b><span class="xs faint">${billDaysOf(SAMPLE_BILL)} days</span></div><div><span class="xs muted">kWh consumed</span><b class="num">426</b></div><div><span class="xs muted">Total amount due</span><b class="num">₱6,280.26</b></div></div>
+    <p class="xs muted" style="margin-top:8px">${ic('info',12)} It matches the <b>Family with 2 aircons</b> preset. Picked another preset? Try it anyway and see what a Low match looks like.</p></div>`; }
+  const billDaysOf=b=>Math.round((new Date(b.end)-new Date(b.start))/864e5);
+
+  const _vBill6=vBill;
+  vBill=function(){ let html=_vBill6(); const h=H();
+    html=html.replace(/(data-act="confirmBill")([^>]*?) disabled>/,'$1$2>').replace(/>(Confirm bill and check|Re-check with these values)</,`>${ic('spark',16)} ${S.checked&&!h.changed&&S.apps.length?'Check again':S.apps.length?'Check my bill':'Save my bill'}<`);
+    if(!S.billTouched&&S.fresh) html=html.replace(/<span class="ferr"[^>]*>[^<]*<\/span>/g,'').replace(/class="input err"/g,'class="input"');
+    if(S.fresh) html=html.replace('<div class="tabs" role="tablist">',sampleBill()+'<div class="tabs" role="tablist" style="margin-top:16px">');
+    if(S.apps.length&&(S.checking||!h.conf)){ const card=S.checking?checkingCard():readyCard(h);
+      html=html.replace(/<div class="lockcard"><p class="muted">Confirm a bill to see your bill match score\.<\/p><\/div>/,card); }
+    if(S.checkedAnim&&h.conf) html=html.replace('unlock-anim','unlock-anim jr-reveal');
+    return html; };
+  VIEWS.bill=vBill;
+
+  // typing in the bill never redraws the page (so the button under your mouse is still there when you click it)
+  onInput=(f=>function(e){ const k=e.target.dataset&&e.target.dataset.in||'';
+    if(k.startsWith('bill:')){ const fl=k.split(':')[1], v=e.target.value; S.bill[fl]=fl==='kwh'||fl==='amount'?parseFloat(v):v; S.billTouched=true; e.target.classList.remove('err'); return; }
+    return f(e); })(onInput);
+
+  function billErrors(){ const b=S.bill, d=billDays(); const out=[];
+    if(!(d>=20&&d<=40)) out.push('a billing period of 20 to 40 days'); if(!(b.kwh>=1&&b.kwh<=5000)) out.push('the kWh from your bill'); if(!(b.amount>0)) out.push('the total amount due'); return out; }
+  ACT.confirmBill=function(a,el){
+    const errs=billErrors(); if(errs.length){ S.billTouched=true; render(); toast('Please enter '+errs.join(' and ')+'.'); return; }
+    if(!S.apps.length){ S.billConfirmed=true; render(); toast('Bill saved. Add your appliances next, then press Check my bill.'); return; }
+    if(S.checking) return;
+    S.checking=true; S.billConfirmed=true; render();
+    const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    setTimeout(()=>{ S.checking=false; S.checked=true; S.checkSig=appSig(); S.lowDemo=false; S.panels=null;
+      const h=H(); S.checkLow=!h.unlocked; S.checkedAnim=true; if(h.unlocked) S.stage=Math.max(S.stage,1);
+      render(); countUp(); S.checkedAnim=false;
+      if(h.unlocked) celebrate(h); else toast('Almost there. Your appliances and your bill don\'t match yet. Fix the list, then check again.');
+    },RM?400:2900);
+  };
+  function celebrate(h){
+    const c=h.conf; const o=document.createElement('div'); o.className='jr-win'; o.setAttribute('role','status');
+    o.innerHTML=`<div class="jr-rays" aria-hidden="true"></div><div class="jr-wincard">${hxOrb(84,'happy')}<span class="chip good">${ic('check2',13)} ${c.band} match · ${c.C.toFixed(1)}</span><h2>Solar unlocked!</h2><p>Your appliances match your bill. Nice work. Your solar plan now uses your real numbers.</p><button class="btn btn-primary" data-act="winClose">See my results ${ic('arrow',16)}</button></div>`;
+    document.body.appendChild(o); requestAnimationFrame(()=>o.classList.add('on'));
+    ACT.winClose=()=>{ o.classList.remove('on'); setTimeout(()=>o.remove(),400); };
+    setTimeout(()=>{ if(document.body.contains(o)) ACT.winClose(); },6000);
+  }
+
+  // locked pages say exactly which step is missing
+  lockedCard=function(what){ const h=H(); const need=!S.apps.length?['plug','Add your appliances first','appliances','Add my appliances']:!(S.bill.kwh>0)||!S.billConfirmed?['receipt','Type in one Meralco bill','bill','Go to bill check']:!S.checked||h.changed?['spark','Press "Check my bill"','bill','Check my bill']:['plug','Fix your appliance list so it matches your bill','appliances','Fix my appliances'];
+    return `<div class="lockcard"><div style="color:var(--amber);margin-bottom:10px">${ic('lock',34)}</div><h3 style="font-size:20px">${what} unlocks after your bill check</h3>
+      <p class="muted" style="max-width:540px;margin:10px auto 6px">We only show solar numbers once your appliance list matches a real Meralco bill (a match score of 60 or higher), so you never plan around a wrong estimate.</p>
+      ${journeyMini()}<p class="small" style="margin:14px 0 6px"><b>Do this first:</b> ${need[1]}</p><a class="btn btn-primary" href="#${need[2]}">${ic(need[0],16)} ${need[3]}</a></div>`; };
+
+  /* ---------- the journey: what to do next, in order ---------- */
+  function journey(){ const h=H();
+    return [['plug','Add your appliances','Pick a typical home, then adjust it.','appliances',S.apps.length>0],
+      ['receipt','Check your bill','Type one Meralco bill and press Check my bill.','bill',!!h.unlocked],
+      ['sun','See your solar plan','System size, roof and how many panels fit.','solar',h.unlocked&&!!S.seenSolar],
+      ['coins','Savings and payback','What it costs, what it saves, loans.','roi',h.unlocked&&!!S.seenRoi],
+      ['route','Get installer quotes','Up to 3 Lucena installers, through Silangan.','next',(S.qSent||[]).length>0],
+      ['gauge','Track my solar','After installation: is it doing well?','perf',S.stage>=5]]; }
+  function journeyMini(){ const j=journey(); const cur=j.findIndex(x=>!x[4]);
+    return `<ol class="jr-mini">${j.map((x,i)=>`<li class="${x[4]?'done':i===cur?'now':''}"><span>${x[4]?ic('check2',12):i+1}</span>${x[1]}</li>`).join('')}</ol>`; }
+  function journeyCard(){ const j=journey(); const cur=j.findIndex(x=>!x[4]); const done=j.filter(x=>x[4]).length;
+    return `<div class="card jr-journey"><div class="row between" style="gap:10px"><div><div class="eyebrow">Your solar journey</div><h3 style="font-size:20px;margin-top:6px">${cur<0?'All steps done':cur===0?'Start here: add your appliances':`Next: ${j[cur][1].toLowerCase()}`}</h3></div><span class="chip">${done} of ${j.length} done</span></div>
+      <div class="jr-bar"><i style="width:${done/j.length*100}%"></i></div>
+      <ol class="jr-list">${j.map((x,i)=>{ const locked=i>=2&&i<=4&&!H().unlocked; const st=x[4]?'done':i===cur?'now':locked?'locked':'';
+        return `<li class="${st}"><a href="#${x[3]}" ${locked?'aria-disabled="true"':''}><span class="jr-n">${x[4]?ic('check2',14):locked?ic('lock',13):i+1}</span><span class="jr-t"><b>${x[1]}</b><span class="xs muted">${locked?'Unlocks after your bill check':x[2]}</span></span>${i===cur?`<span class="btn btn-sm btn-primary">Start ${ic('arrow',14)}</span>`:''}</a></li>`; }).join('')}</ol>
+      ${S.fresh&&!H().unlocked?`<p class="xs muted" style="margin-top:12px">${ic('info',12)} In a hurry? <button class="linkbtn" data-act="loadSample">Load the sample home</button> to skip ahead with a home that's already checked.</p>`:''}</div>`; }
+  function startCard(){ const h=H(); const j=[['plug','Add your appliances','appliances',S.apps.length>0],['receipt','Type one Meralco bill','bill',S.billConfirmed&&+S.bill.kwh>0],['spark','Press Check my bill','bill',!!h.unlocked]]; const cur=j.findIndex(x=>!x[3]);
+    return `<div class="card jr-start"><div class="eyebrow">Get started</div><h3 style="font-size:19px;margin-top:6px">Three steps unlock your solar plan</h3>
+      <ol class="jr-list">${j.map((x,i)=>`<li class="${x[3]?'done':i===cur?'now':''}"><a href="#${x[2]}"><span class="jr-n">${x[3]?ic('check2',14):i+1}</span><span class="jr-t"><b>${x[1]}</b></span>${i===cur?`<span class="btn btn-sm btn-primary">Go ${ic('arrow',14)}</span>`:''}</a></li>`).join('')}</ol>
+      <p class="xs muted" style="margin-top:12px">${ic('info',12)} In a hurry? <button class="linkbtn" data-act="loadSample">Load the sample home</button> to skip ahead with a home that's already checked.</p></div>`; }
+  function nextBar(){ const j=journey().slice(2,5); const cur=j.findIndex(x=>!x[4]); if(cur<0) return ''; const n=j[cur];
+    return `<details class="jr-nextbar"><summary><span class="jr-nb-ic">${ic(n[0],16)}</span><span class="small"><b>Next:</b> ${n[1].toLowerCase()}</span><a class="btn btn-sm btn-primary" href="#${n[3]}">Go ${ic('arrow',14)}</a><span class="jr-nb-more xs muted">All steps ${ic('chevD',12)}</span></summary>
+      <ol class="jr-steps2">${journey().map(x=>`<li><a href="#${x[3]}">${ic(x[0],14)} ${x[1]}</a><span class="xs muted">${x[2]}</span></li>`).join('')}</ol></details>`; }
+  const _vDash6=VIEWS.dash;
+  VIEWS.dash=function(){ const h=H();
+    if(S.fresh&&!h.unlocked){ const first=!S.apps.length;
+      return pageHead(first?'Welcome to Silangan':'Keep going','Three steps unlock your solar plan: your appliances, one Meralco bill, then the check. Nothing is guessed.','',first?'Magsimula tayo. / Let\'s begin.':'')+startCard()+
+        `<div class="grid g3" style="margin-top:4px">${[['plug','Why appliances?','They tell us where your electricity goes, hour by hour. Solar is sized from this, not from a guess.'],['receipt','Why a bill?','Your bill is the real number. If our estimate is close to it, the solar plan you see can be trusted.'],['lock','Why locked?','So no one plans a ₱200,000 system around wrong numbers. It unlocks the moment your check passes.']].map(([i,t,s])=>`<div class="card"><span style="color:var(--sun)">${ic(i,20)}</span><b style="display:block;margin-top:8px">${t}</b><p class="small muted" style="margin-top:4px">${s}</p></div>`).join('')}</div>`; }
+    let html=_vDash6(); if(S.fresh&&!(S.qSent||[]).length) html=html.replace(/(<div class="page-head">[\s\S]*?<\/div><\/div>)/,'$1'+nextBar()); return html; };
+  ['solar','roi'].forEach(r=>{ const f=VIEWS[r]; VIEWS[r]=function(){ if(H().unlocked) S['seen'+r[0].toUpperCase()+r.slice(1)]=true; return f(); }; });
+
+  // empty "My appliances": point straight at the presets
+  VIEWS.appliances=(f=>function(){ let html=f(); if(!S.apps.length) html=html.replace(/(<div class="page-head">[\s\S]*?<\/div><\/div>)/,`$1<div class="card jr-hint">${ic('info',16)}<span class="small"><b>Start here.</b> Pick the typical home closest to yours, then adjust the hours. For the demo, pick <b>Family with 2 aircons</b> to match the sample bill.</span></div>`); return html; })(VIEWS.appliances);
+
+  // after the list exists, Home/appliances show the next step
+  shell=(f=>function(inner){ let h=f(inner);
+    if(S.role==='household'&&S.fresh&&S.apps.length&&!H().unlocked&&S.route==='appliances'&&!S.checking) h=h.replace('</main>',`<div class="jr-next"><span class="small">${ic('receipt',16)} <b>Next:</b> check these appliances against one Meralco bill.</span><a class="btn btn-sm btn-primary" href="#bill">Check my bill ${ic('arrow',14)}</a></div></main>`);
+    return h; })(shell);
+
+  /* ---------- Track my solar: likely cause + savings vs. promise ---------- */
+  // Open-Meteo monthly sunshine vs Lucena's normal for that month (sample values standing in for the live call)
+  const SUN_MONTH={Jan:.97,Feb:1.03,Mar:.99,Apr:1.01,May:.98,Jun:.88,Jul:.84,Aug:.86,Sep:.9,Oct:.93,Nov:.95,Dec:.96};
+  const PROMISE={inst:'Sample quote X',kwp:3.30,monthly:4500};
+  const CAUSE_DEMO={
+    ok:{t:'On track',ic:'check2',c:'good',pi:[.98,.97,.99],sun:[.97,1.03,.99],why:'Output follows the sunshine. Nothing to fix.',todo:['Keep logging each month.','Wipe the panels with water if you see dust.']},
+    weather:{t:'Weather, not your panels',ic:'cloud',c:'warn',pi:[.95,.78,.74],sun:[.97,.79,.75],why:'Output dropped, but sunshine dropped by the same amount. Your panels are fine.',todo:['Nothing to fix.','Check again next month.']},
+    dirt:{t:'Likely dirt or dust',ic:'drop',c:'warn',pi:[.93,.86,.79],sun:[.99,1.01,.98],why:'Sunshine was normal, but output slid down a little every month. That slow slide is what dust and bird droppings do.',todo:['Clean the panels early in the morning (water and a soft brush).','Log next month. It should bounce back.']},
+    fault:{t:'Possible fault or new shade',ic:'stop',c:'bad',pi:[.97,.96,.58],sun:[.98,1.0,.97],why:'Sunshine was normal, but output fell suddenly in one month. A sudden drop usually means an inverter fault, a broken string or something new casting shade.',todo:['Check the inverter app for error codes.','Look for new shade (a tree, a new building).','Call your installer and show them this page.']}};
+  S.causeDemo=S.causeDemo||'live';
+  function perfRows(){ const kwp=3.30, h=H();
+    return S.perf.map(p=>{ const i=MONTHS.indexOf(p.m); const exp=kwp*K.PSH_M[i]*K.DAYS[i]*h.f*K.PR; const sun=SUN_MONTH[p.m]||1;
+      const save=(p.g-p.exp)*K.R_RETAIL+p.exp*K.R_BGC; return {m:p.m,g:p.g,exp,pi:p.g/exp,sun,save}; }); }
+  function liveCause(rows){ const L=rows.slice(-3); if(L.length<2) return 'ok'; const last=L[L.length-1], prev=L[L.length-2];
+    const wAdj=L.map(r=>r.pi/r.sun);
+    if(last.pi>=.85) return 'ok';
+    if(wAdj[wAdj.length-1]>=.9) return 'weather';
+    if(prev.pi-last.pi>.2) return 'fault';
+    return 'dirt'; }
+  function causeCard(){ const rows=perfRows(); const key=S.causeDemo==='live'?liveCause(rows):S.causeDemo, c=CAUSE_DEMO[key];
+    const ms=S.causeDemo==='live'?rows.slice(-3).map(r=>({m:r.m,pi:r.pi,sun:r.sun})):['Jan','Feb','Mar'].map((m,i)=>({m,pi:c.pi[i],sun:c.sun[i]}));
+    return `<div class="card jr-cause"><div class="row between" style="gap:10px;align-items:flex-start"><div><div class="eyebrow">Likely cause</div><h3 style="font-size:20px;margin-top:6px"><span class="chip ${c.c}" style="vertical-align:middle">${ic(c.ic,13)}</span> ${c.t}</h3></div>${infoH('<b>How we decide.</b> We compare your output with the sunshine Open-Meteo measured over Lucena that month. Output down with the sun = weather. Sun normal, output sliding slowly = dirt. Sun normal, sudden drop = fault or new shade. <br><br>Source: Open-Meteo satellite irradiance (Himawari), SRS formula D.20.')}</div>
+      <p class="small muted" style="margin-top:6px">${c.why}</p>
+      <div class="jr-sunvs">${ms.map(r=>`<div><span class="xs muted">${r.m}</span><div class="jr-pair"><i class="s" style="height:${Math.round(r.sun*60)}px" title="Sunshine ${Math.round(r.sun*100)}%"></i><i class="o" style="height:${Math.round(r.pi*60)}px" title="Output ${Math.round(r.pi*100)}%"></i></div><span class="xs num">${Math.round(r.sun*100)}% · ${Math.round(r.pi*100)}%</span></div>`).join('')}
+        <div class="jr-leg xs muted"><span><i class="s"></i>Sunshine vs normal</span><span><i class="o"></i>Output vs expected</span></div></div>
+      <div class="small" style="margin-top:10px"><b>What to do</b><ul class="jr-todo">${c.todo.map(t=>`<li>${t}</li>`).join('')}</ul></div>
+      <div class="row xs" style="gap:6px;margin-top:12px;flex-wrap:wrap"><span class="muted">See an example:</span>${[['live','My data'],['weather','Cloudy month'],['dirt','Dirt'],['fault','Fault']].map(([k,l])=>`<button class="btn btn-sm ${S.causeDemo===k?'btn-primary':'btn-ghost'}" data-act="causeDemo" data-arg="${k}">${l}</button>`).join('')}</div></div>`; }
+  function promiseCard(){ const rows=perfRows(); let cumP=0,cumA=0; const r2=rows.map(r=>{ cumP+=PROMISE.monthly; cumA+=r.save; return {...r,cumP,cumA}; });
+    const pct=cumA/cumP, gap=cumA-cumP; const mx=Math.max(PROMISE.monthly,...rows.map(r=>r.save))*1.1;
+    const wadj=rows.reduce((s,r)=>s+r.save/r.sun,0)/(PROMISE.monthly*rows.length);
+    return `<div class="card jr-promise"><div class="row between" style="gap:10px;align-items:flex-start"><div><div class="eyebrow">Savings vs. the installer's promise</div><h3 style="font-size:20px;margin-top:6px">${Math.round(pct*100)}% of what was promised</h3></div>${infoH('<b>Promise</b> = the monthly savings written on your accepted quote ('+PROMISE.inst+', '+PROMISE.kwp.toFixed(2)+' kWp: '+fmt.peso(PROMISE.monthly)+' a month). <br><b>Actual</b> = solar you used yourself × ₱14.74 (Meralco rate) + solar you exported × ₱9.70 (generation charge credit under net metering). <br><br>Sources: your quote, your inverter app, Meralco Sept 2026 rates.')}</div>
+      <div class="grid g3" style="margin-top:10px"><div><span class="xs muted">Promised so far</span><b class="num" style="display:block;font-size:20px">${fmt.peso(cumP)}</b></div><div><span class="xs muted">Actually saved</span><b class="num" style="display:block;font-size:20px;color:var(--sun)">${fmt.peso(cumA)}</b></div><div><span class="xs muted">Gap</span><b class="num" style="display:block;font-size:20px;color:${gap<0?'var(--caution)':'var(--volt)'}">${gap<0?'−':'+'}${fmt.peso(Math.abs(gap))}</b></div></div>
+      <div class="jr-pbars">${r2.map(r=>`<div><div class="jr-pair wide"><i class="p" style="height:${Math.round(PROMISE.monthly/mx*90)}px" title="Promised ${fmt.peso(PROMISE.monthly)}"></i><i class="a" style="height:${Math.round(r.save/mx*90)}px" title="Saved ${fmt.peso(r.save)}"></i></div><span class="xs muted">${r.m}</span><span class="xs num">${fmt.peso(r.save)}</span></div>`).join('')}
+        <div class="jr-leg xs muted"><span><i class="p"></i>Promised</span><span><i class="a"></i>Actually saved</span></div></div>
+      <p class="small muted" style="margin-top:10px">${pct>=.95?'Your system is keeping its promise.':wadj>=.95?`Below the promise, but January had less sun than usual. Adjusted for weather you're at ${Math.round(wadj*100)}%, so the system itself is fine.`:'Below the promise even after allowing for the weather. Show this page to your installer.'}</p></div>`; }
+  ACT.causeDemo=a=>{ S.causeDemo=a; render(); };
+  VIEWS.perf=(f=>function(){ let html=f(); const add=`<div class="grid jr-two" style="grid-template-columns:minmax(0,1fr) minmax(0,1fr)">${causeCard()}${promiseCard()}</div>`;
+    const j=html.indexOf('<div class="grid" style="grid-template-columns:minmax(0,1fr) minmax(0,1fr)"><div class="card suncard">');
+    return j>0?html.slice(0,j)+add+html.slice(j):html+add; })(VIEWS.perf);
+
+  render();
+})();
+
+/* ===== Round 5 (2026-10-14): Helios on Home (daily brief) + chat controls on the Helios page ===== */
+(function(){
+  Object.assign(IC_PATHS,{
+    hhist:'M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5M12 7v5l3 3',
+    hcopy:'M9 9h11v11H9zM5 15V5a2 2 0 0 1 2-2h10',
+    hup:'M7 10v11H3V10zM7 10l4-7a2 2 0 0 1 3 2l-1 5h6a2 2 0 0 1 2 2.3l-1.4 7a2 2 0 0 1-2 1.7H7',
+    hdown:'M17 14V3h4v11zM17 14l-4 7a2 2 0 0 1-3-2l1-5H5a2 2 0 0 1-2-2.3l1.4-7A2 2 0 0 1 6.4 3H17',
+    hsimp:'M4 7h16M4 12h10M4 17h6',
+    htrash:'M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3',
+    hstop:'M7 7h10v10H7z',
+    hpen:'M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z',
+    hup2:'M6 15l6-6 6 6', hdn2:'M6 9l6 6 6-6', hx:'M6 6l12 12M18 6 6 18', hplus:'M12 5v14M5 12h14'
+  });
+
+  /* ---------- Helios gets its own place in the menu ---------- */
+  if(!SECTIONS.household.some(s=>s.id==='hx')) SECTIONS.household.splice(1,0,{id:'hx',label:'Helios',ic:'chat',fil:'Katulong',tabs:[['ai','Helios','chat']]});
+  shell=(f=>function(inner){ let h=f(inner); if(S.role!=='household') return h;
+    h=h.replace(/(<a class="nav[^"]*" href="#ai"[^>]*>)<svg[\s\S]*?<\/svg>/,`$1${hxOrb(20,'navorb')}`)
+       .replace(/(<a href="#ai" class="[^"]*">)<svg[\s\S]*?<\/svg>/,`$1${hxOrb(22,'navorb')}`)
+       .replace(/<a role="menuitem" href="#ai">[\s\S]*?<\/a>/,'');
+    return h; })(shell);
+
+  /* ---------- the daily brief on Home ---------- */
+  S.hxTap=S.hxTap||{}; S.hxBriefMin=!!S.hxBriefMin; S.hxInline=S.hxInline||[];
+  const first=()=>(S.user||'Maria').split(' ')[0];
+  const short=a=>esc(a.name.split(',')[0].replace(/\s*\(.*\)/,''));
+  const topApps=()=>[...S.apps].sort((a,b)=>appKwh(b)-appKwh(a)).slice(0,3);
+  function monthSoFar(){ const d0=TODAY.slice(0,8)+'01'; let sum=0,n=0; for(let k=1;k<32;k++){ const key=dShift(k); if(key<d0) break; const v=dayKwh(key); if(v!=null){ sum+=v; n++; } } return {sum,n}; }
+  function briefFacts(){
+    let yk=1, y=null; for(;yk<=7;yk++){ y=dayKwh(dShift(yk)); if(y!=null) break; } if(y==null) yk=1;
+    const h=H(), yl=yk===1?'Yesterday':'On '+dLabel(dShift(yk)), usual=h.Eday??(h.Eyear/365), ms=monthSoFar(), avg=ms.n?ms.sum/ms.n:usual;
+    const fc=avg*30*K.R_RETAIL, base=h.bill?h.bill*K.R_RETAIL:null;
+    return {h,y,yl,usual,ms,avg,fc,base};
+  }
+  function briefSay(){
+    const f=briefFacts(), h=f.h;
+    if(S.fresh&&!h.unlocked) return `Hi ${first()}, I'm <b>Helios</b>. I explain your numbers in plain words and log your day for you. First, finish the three steps below to unlock your solar plan.`;
+    if(S.hasSolar==='Yes'&&S.perf&&S.perf.length){ const p=S.perf[S.perf.length-1]; return `Your panels made <b>${fmt.n(p.g)} kWh</b> in ${p.m}. Open Track my solar to see how that compares with the sunshine and with the installer's promise.`; }
+    if(f.y==null) return `You haven't logged a day yet. Log today in one tap below, so I can compare your real days with your estimate of <b>${f.usual.toFixed(1)} kWh a day</b>.`;
+    const d=f.y-f.usual, cmp=d>1.5?'above':d>.5?'a little above':d<-1.5?'below':d<-.5?'a little below':'about the same as';
+    const top=topApps()[0], why=h.cool>=.4?`Most of it was <b>cooling (${fmt.pct(h.cool)})</b>.`:top?`Your biggest user is the <b>${short(top).toLowerCase()}</b>.`:'';
+    return `${f.yl} you used <b>${f.y.toFixed(1)} kWh</b>, ${cmp} your usual ${f.usual.toFixed(1)}. ${why} Log today so your estimate stays close to your bill.`;
+  }
+  function briefStats(){ const f=briefFacts(); if(S.fresh&&!f.h.unlocked) return '';
+    const st=[
+      [f.y==null?'Yesterday':f.yl.replace(/^On /,''),f.y==null?'Not logged':`${f.y.toFixed(1)} kWh`,f.y==null?'Log it in the Daily log':`${fmt.peso(f.y*K.R_RETAIL)} at ₱14.74/kWh`],
+      ['This month so far',`${fmt.n(f.ms.sum,0)} kWh`,`${fmt.peso(f.ms.sum*K.R_RETAIL)} · ${f.ms.n} day${f.ms.n===1?'':'s'} logged`],
+      ['Bill forecast',`≈ ${fmt.peso(Math.round(f.fc/10)*10)}`,f.base?(f.fc>f.base*1.05?`Above your ${fmt.peso(f.base)} bill`:f.fc<f.base*.95?`Below your ${fmt.peso(f.base)} bill`:`Close to your ${fmt.peso(f.base)} bill`):'For a 30-day bill']];
+    return `<div class="hxb-stats">${st.map(s=>`<div class="hxb-stat"><span class="xs muted">${s[0]}</span><b class="num">${s[1]}</b><span class="xs faint">${s[2]}</span></div>`).join('')}</div>`; }
+  function weekDots(){ const L='SMTWTFS'; return `<div class="hxb-week" title="Days logged this week">${[6,5,4,3,2,1,0].map(k=>{ const key=dShift(k), dn=k===0?!!S.log[TODAY]:dayKwh(key)!=null; return `<i class="${dn?'y':k===0?'t':''}">${L[dParse(key).getUTCDay()]}</i>`; }).join('')}<span class="xs muted">${[6,5,4,3,2,1,0].filter(k=>k===0?!!S.log[TODAY]:dayKwh(dShift(k))!=null).length} of 7 days</span></div>`; }
+  function logChips(){ const apps=topApps(); if(!apps.length) return '';
+    const n=apps.filter(a=>S.hxTap[a.id]).length;
+    return `<div class="hxb-logs"><div class="hxb-loghead"><span class="eyebrow">Log today in one tap</span>${weekDots()}</div>
+      <div class="hxb-chips">${apps.map(a=>S.hxTap[a.id]?`<button class="hxb-chip done" data-act="hxTap" data-arg="${a.id}">${ic('check2',14)} ${short(a)} · ${a.h} h logged <span class="hxb-via">VIA HELIOS</span></button>`:`<button class="hxb-chip" data-act="hxTap" data-arg="${a.id}">${ic('hplus',14)} ${short(a)} · ${a.h} h today</button>`).join('')}
+      ${n<apps.length?`<button class="hxb-chip ghost" data-act="hxSame">${ic('check2',14)} Same as yesterday</button>`:''}</div></div>`; }
+  function brief(){
+    const h=H(), locked=S.fresh&&!h.unlocked, off=S.aiOffline;
+    if(S.hxBriefMin) return `<div class="card hxb min"><div class="hxb-head"><div class="hxb-who">${hxOrb(26,'breathe')}<span class="small hxb-minline">${locked?'Helios · finish the 3 steps to unlock your solar plan':briefSay().split('. ')[0].replace(/<[^>]+>/g,'')+'.'}</span></div><button class="hxb-ib" data-act="hxMin" aria-label="Expand the Helios brief">${ic('hdn2',16)}</button></div></div>`;
+    const why=locked?[['What can Helios do?','What can Helios do?']]:[...(briefFacts().y==null?[]:[['Why was it like that?','Why is my bill high?']]),['How is the forecast made?','How is the bill forecast made?']];
+    return `<div class="card hxb" aria-label="Helios daily brief"><div class="hxb-head"><div class="hxb-who">${hxOrb(40,off?'dim':'breathe')}<div><b>Helios</b><div class="xs muted">${locked?'Your guide':'Today\'s brief · from your daily log'}</div></div></div>
+      <div class="hxb-r"><a class="btn btn-sm btn-ghost" href="#ai">${ic('chat',14)} ${S.chat.length>1?'Continue chat':'Open Helios'}</a><button class="hxb-ib" data-act="hxMin" aria-label="Collapse the Helios brief">${ic('hup2',16)}</button></div></div>
+      <p class="hxb-say">${briefSay()}</p>${briefStats()}
+      <div class="hxb-why">${why.map(([l,q])=>`<button class="linkbtn" data-act="hxBriefAsk" data-arg="${esc(q)}">${ic('info',13)} ${l}</button>`).join('')}</div>
+      ${locked?'':logChips()}
+      <form class="hxb-ask" data-form="hxbrief"><input class="input" id="hxbIn" autocomplete="off" placeholder="${locked?'Ask me anything about Silangan…':'Ask about your numbers, or type what you used…'}" ${off?'disabled':''}><button class="hxsend" type="submit" aria-label="Send" ${off?'disabled':''}>${ic('arrow',16)}</button></form>
+      ${S.hxInline.length?`<div class="hxb-inline">${S.hxInline.map(m=>hxMsg(m)).join('')}</div>`:''}</div>`;
+  }
+  VIEWS.dash=(f=>function(){ let html=f(); if(S.role!=='household') return html;
+    const b=brief(), re=/(<div class="page-head">[\s\S]*?<\/div><\/div>)/;
+    return re.test(html)?html.replace(re,'$1'+b):b+html; })(VIEWS.dash);
+
+  function snapshotToday(){ if(!('hxPrev' in S)) S.hxPrev=S.log[TODAY]?S.log[TODAY].map(e=>({...e})):null; }
+  function restoreIfEmpty(){ if(Object.keys(S.hxTap).length) return; if(S.hxPrev) S.log[TODAY]=S.hxPrev; else delete S.log[TODAY]; delete S.logVia[TODAY]; delete S.hxPrev; }
+  Object.assign(ACT,{
+    hxMin:()=>{ S.hxBriefMin=!S.hxBriefMin; render(); },
+    hxTap:arg=>{ const a=S.apps.find(x=>String(x.id)===String(arg)); if(!a) return; const id=a.id;
+      if(S.hxTap[id]){ delete S.hxTap[id]; restoreIfEmpty(); toast(`${a.name.split(',')[0]} removed from today's log.`); render(); return; }
+      snapshotToday(); const cur=S.log[TODAY]?S.log[TODAY].map(e=>({...e})):S.apps.map(x=>({id:x.id,h:x.h}));
+      S.log[TODAY]=cur.map(e=>String(e.id)===String(id)?{...e,h:a.h}:e); S.logVia[TODAY]=true; S.hxTap[id]=true;
+      toast(`${a.name.split(',')[0]}: ${a.h} h saved to today's log. Tap it again to undo.`); render(); },
+    hxSame:()=>{ snapshotToday(); const y=S.log[dShift(1)]; S.log[TODAY]=(y||S.apps.map(x=>({id:x.id,h:x.h}))).map(e=>({...e})); S.logVia[TODAY]=true;
+      topApps().forEach(a=>S.hxTap[a.id]=true); toast('Today is logged with the same hours as yesterday.'); render(); },
+    hxBriefAsk:q=>briefAsk(q),
+  });
+
+  // typed on Home: a log sentence is confirmed right on Home; a question opens the full Helios page
+  function briefAsk(q){ q=(q||'').trim(); if(!q||S.aiOffline) return;
+    if(isLogMsg(q)){ const me={who:'me',t:esc(q),fromHome:1}, ai={who:'ai',t:logAnswer(q),done:true,lg:true}; S.chat.push(me,ai); S.hxInline=[me,ai]; render(); return; }
+    S.hxFromHome=q; S.route='ai'; if(location.hash.slice(1)!=='ai') history.pushState(null,'','#ai'); render(); scrollTo(0,0);
+    chatAsk(q); }
+  document.addEventListener('submit',e=>{ if(!e.target.matches||!e.target.matches('form[data-form=hxbrief]')) return; e.preventDefault(); e.stopImmediatePropagation();
+    const i=e.target.querySelector('input'); const v=i.value; i.value=''; briefAsk(v); },true);
+  // the message sent from Home carries a small "From Home" tag
+  const _chatAskH=chatAsk;
+  chatAsk=function(q){ const n=S.chat.length; const r=_chatAskH(q); if(S.hxFromHome){ const m=S.chat.slice(n).find(x=>x.who==='me'); if(m) m.fromHome=1; S.hxFromHome=null; } return r; };
+
+
+  /* answers for the brief's own questions */
+  hxAnswer=(f=>function(q){
+    if(/forecast/i.test(q)){ const ms=monthSoFar(), h=H(), avg=ms.n?ms.sum/ms.n:(h.Eday??h.Eyear/365);
+      return {t:`I take your average so far this month, <span class="cite">${avg.toFixed(1)} kWh a day</span> over ${ms.n} logged days, stretch it to a 30-day bill, then multiply by Meralco's <span class="cite">₱14.7424/kWh</span>. That gives about <span class="cite">${fmt.peso(Math.round(avg*30*K.R_RETAIL/10)*10)}</span>. It's a guide, not your bill.`,
+        used:[['Daily log',`${ms.n} days this month`,'log'],['Rate','₱14.7424/kWh (Meralco Sep 2026)','sim']],act:[['Open Daily log','log']]}; }
+    if(/what can helios|helios do/i.test(q)) return {t:`Two things. I <b>explain</b> any number in Silangan in plain words, using only your own results. And I <b>log your day</b> when you tell me what you used, like “aircon 4 hours today”. Logs are shown to you first and you can undo them. Your bill, appliances and quotes stay on their own pages.`,used:[],act:[['Open Daily log','log']]};
+    return f(q); })(hxAnswer);
+  hxSteps=(f=>function(q){ if(/forecast/i.test(q)) return ['Reading your daily log','Calculating the month']; return f(q); })(hxSteps);
+  /* ---------- Helios page: answers can be stopped ---------- */
+  hxAsk=function(q){ if(!q.trim()||S.hxThink) return; S.chat.push({who:'me',t:esc(q)});
+    const tok=S.hxTok=(S.hxTok||0)+1, steps=hxSteps(q); S.hxThink=steps.length?steps:false; S.hxThinkAt=0; render();
+    const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches, gap=reduce?60:380;
+    const adv=()=>{ if(tok!==S.hxTok) return; S.hxThinkAt++; if(S.hxThink&&S.hxThinkAt<S.hxThink.length){ if(S.route==='ai') render(); setTimeout(adv,gap); return; }
+      S.hxThink=null; const a=hxAnswer(q), msg={who:'ai',t:'',used:a.used,act:a.act,chart:a.chart,done:false,q}; S.chat.push(msg); S.hxStream=msg; if(S.route==='ai') render();
+      const words=a.t.split(/(\s+)/); let i=0;
+      const tick=()=>{ if(tok!==S.hxTok) return; i+=reduce?words.length:3; msg.t=words.slice(0,i).join('')+(i<words.length?' ▍':'');
+        const box=document.getElementById('chat'); if(box&&box.lastElementChild){ const t=box.lastElementChild.querySelector('.hxtext'); if(t) t.innerHTML=msg.t; scrollTo({top:document.body.scrollHeight}); }
+        if(i<words.length) setTimeout(tick,40); else { msg.done=true; S.hxStream=null; if(S.route==='ai'){ render(); scrollTo({top:document.body.scrollHeight}); } } }; tick(); };
+    setTimeout(adv,gap); };
+  const busy=()=>S.hxThink!=null||!!S.hxStream;
+
+  /* ---------- Helios page: chat history behind a button ---------- */
+  const old=(t,a)=>[GREET,{who:'me',t},{who:'ai',t:a,done:true,used:[],act:[]}];
+  S.hxChats=S.hxChats||[
+    {id:'h1',title:'How does net metering work?',when:'Oct 5',msgs:old('How does net metering work?','Solar you use yourself saves the full <span class="cite">₱14.7424/kWh</span>. Extra solar goes to Meralco and is credited at <span class="cite">₱9.7032/kWh</span>. Unused credits carry over to the next bill.')},
+    {id:'h2',title:'Why is my bill high?',when:'Oct 2',msgs:old('Why is my bill high?','Your aircon is the main reason. Cooling is about <span class="cite">two thirds</span> of your estimated use.')},
+    {id:'h3',title:'What is a bill match score?',when:'Sep 28',msgs:old('What is a bill match score?','It shows how close our estimate from your appliances is to your real Meralco bill. <span class="cite">High</span> means the solar plan built on it can be trusted.')}];
+  S.hxCur=S.hxCur||null; S.hxHist=false; S.hxDel=null; S.hxFb=null; S.hxLangX=S.hxLangX||null;
+  function syncChat(){ if(S.chat.length<2||S.hxChats.some(c=>c.msgs===S.chat)) return;
+    const m=S.chat.find(x=>x.who==='me'); if(!m) return; const t=m.t.replace(/<[^>]+>/g,'').replace(/&amp;/g,'&');
+    const id='c'+Date.now(); S.hxChats.unshift({id,title:t.length>40?t.slice(0,38)+'…':t,when:'Today',msgs:S.chat}); S.hxCur=id; }
+  function histDrawer(){ if(!S.hxHist) return '';
+    const g=[['Today',S.hxChats.filter(c=>c.when==='Today')],['Earlier',S.hxChats.filter(c=>c.when!=='Today')]].filter(x=>x[1].length);
+    return `<div class="hxh-scrim" data-act="hxHist"></div><aside class="hxh" aria-label="Your chats"><div class="hxh-top"><b>Your chats</b><button class="hxb-ib" data-act="hxHist" aria-label="Close chats">${ic('hx',16)}</button></div>
+      <button class="btn btn-primary btn-sm hxh-new" data-act="hxNew">${ic('hpen',14)} New chat</button>
+      ${g.map(([l,cs])=>`<div class="hxh-grp">${l}</div>${cs.map(c=>S.hxDel===c.id?`<div class="hxh-item del"><span class="small">Delete this chat?</span><div class="row" style="gap:6px"><button class="btn btn-sm hxh-danger" data-act="hxDelYes" data-arg="${c.id}">Delete</button><button class="btn btn-sm btn-ghost" data-act="hxDelNo">Keep</button></div></div>`
+        :`<div class="hxh-item ${S.chat===c.msgs?'on':''}"><button class="hxh-open" data-act="hxOpen" data-arg="${c.id}"><span>${esc(c.title)}</span><span class="xs faint">${c.when}</span></button><button class="hxh-del" data-act="hxDel" data-arg="${c.id}" aria-label="Delete ${esc(c.title)}">${ic('htrash',14)}</button></div>`).join('')}`).join('')||'<p class="small muted">No chats yet.</p>'}
+      <p class="xs faint hxh-foot">${ic('lock',11)} Only you see your chats. Logs you saved stay in your daily log even if you delete a chat.</p></aside>`; }
+
+  /* ---------- Helios page: tools under each answer, "From Home", language ---------- */
+  hxMsg=(f=>function(m){ let o=f(m);
+    if(m.who==='me'&&m.fromHome) return `<span class="hxfrom">From Home</span>`+o;
+    if(m.who!=='ai'||!m.done||m.lg||m===GREET||m.stopped) return o;
+    const i=S.chat.indexOf(m); if(i<0) return o;
+    const tools=`<div class="hxtools"><button class="hxtb" data-act="hxCopy" data-arg="${i}" title="Copy" aria-label="Copy answer">${ic('hcopy',14)}</button><button class="hxtb ${m.fb==='up'?'on':''}" data-act="hxFb" data-arg="${i}:up" title="Helpful" aria-label="Helpful" aria-pressed="${m.fb==='up'}">${ic('hup',14)}</button><button class="hxtb ${m.fb==='down'?'on':''}" data-act="hxFb" data-arg="${i}:down" title="Not helpful" aria-label="Not helpful" aria-pressed="${m.fb==='down'}">${ic('hdown',14)}</button>${!m.simple&&!m.isSimple?`<button class="hxtb txt" data-act="hxSimple" data-arg="${i}">${ic('hsimp',14)} Explain simpler</button>`:''}</div>
+      ${S.hxFb===i?`<div class="hxfbx"><span class="xs muted">What went wrong?</span><div class="row" style="gap:6px;flex-wrap:wrap">${['Wrong number','Hard to understand','Not what I asked'].map(r=>`<button class="chip" data-act="hxFbR" data-arg="${r}">${r}</button>`).join('')}</div></div>`:''}`;
+    return o.replace(/<\/div><\/div>$/,tools+'</div></div>'); })(hxMsg);
+  VIEWS.ai=(f=>function(){ syncChat(); let h=f();
+    h=h.replace('<div class="hxtop"><div class="row" style="gap:10px;flex-wrap:nowrap">',`<div class="hxtop"><div class="row" style="gap:10px;flex-wrap:nowrap"><button class="btn btn-sm btn-ghost hxchats" data-act="hxHist" aria-label="Your chats">${ic('hhist',15)}<span class="t">Chats</span></button>`);
+    h=h.replace(/<div class="seg sm hxlang"[\s\S]*?<\/div>/,`<div class="seg sm hxlang" role="group" aria-label="Answer language">${[['EN','English'],['FIL','Filipino'],['TL','Taglish']].map(([k,l])=>`<button type="button" class="${S.hxLang===k||(!S.hxLang&&k==='EN')?'on':''}" data-act="hxLang" data-arg="${k}">${l}</button>`).join('')}</div>`);
+    if(busy()) h=h.replace(/<button class="hxsend" type="submit"[\s\S]*?<\/button>/,`<button class="hxsend stop" type="button" data-act="hxStop" aria-label="Stop the answer">${ic('hstop',14)}</button>`);
+    return h+histDrawer(); })(VIEWS.ai);
+
+  const _hxNew=ACT.hxNew, _hxLang=ACT.hxLang;
+  Object.assign(ACT,{
+    hxNew:()=>{ if(busy()) ACT.hxStop(); S.hxCur=null; S.hxHist=false; S.hxFb=null; _hxNew(); },
+    hxHist:()=>{ S.hxHist=!S.hxHist; S.hxDel=null; render(); },
+    hxOpen:id=>{ const c=S.hxChats.find(x=>x.id===id); if(!c) return; if(busy()) ACT.hxStop(); S.chat=c.msgs; S.hxCur=id; S.hxHist=false; S.hxFb=null; S.hxThink=null; render(); },
+    hxDel:id=>{ S.hxDel=id; render(); }, hxDelNo:()=>{ S.hxDel=null; render(); },
+    hxDelYes:id=>{ const c=S.hxChats.find(x=>x.id===id); S.hxChats=S.hxChats.filter(x=>x.id!==id); S.hxDel=null; if(c&&c.msgs===S.chat){ S.chat=[GREET]; S.hxCur=null; } render(); toast('Chat deleted. Logs you saved from it stay in your daily log.'); },
+    hxStop:()=>{ S.hxTok=(S.hxTok||0)+1; if(S.hxStream){ const m=S.hxStream; m.t=m.t.replace(/ ▍$/,'')+' <span class="xs muted">(stopped)</span>'; m.done=true; S.hxStream=null; }
+      else if(S.hxThink!=null){ S.hxThink=null; S.chat.push({who:'ai',t:'<span class="muted">Stopped. Ask again anytime.</span>',done:true,stopped:1}); } render(); },
+    hxCopy:i=>{ const d=document.createElement('div'); d.innerHTML=(S.chat[+i]||{}).t||''; try{ navigator.clipboard.writeText(d.textContent).catch(()=>{}); }catch(_){} toast('Answer copied.'); },
+    hxFb:a=>{ const [i,v]=a.split(':'), m=S.chat[+i]; if(!m) return; m.fb=m.fb===v?null:v; S.hxFb=m.fb==='down'?+i:null; render(); if(m.fb==='up') toast('Thanks! Glad it helped.'); },
+    hxFbR:r=>{ S.hxFb=null; render(); toast(`Thanks. “${r}” was sent so the team can fix this answer.`); },
+    hxSimple:i=>{ const m=S.chat[+i]; if(!m) return; m.simple=1; const d=document.createElement('div'); d.innerHTML=m.t; const s=d.textContent.replace(/\s+/g,' ').trim().split(/(?<=\.)\s/)[0];
+      S.chat.push({who:'ai',t:`<b>In short:</b> ${esc(s)}`,done:true,isSimple:1,used:[],act:[]}); render(); scrollTo({top:document.body.scrollHeight}); },
+    hxLang:a=>{ if(a==='TL'){ S.hxLang='TL'; render(); toast('Helios will answer in Taglish. (Prototype answers stay in English.)'); return; } _hxLang(a); },
+  });
+  addEventListener('keydown',e=>{ if(e.key==='Escape'&&S.hxHist){ S.hxHist=false; render(); } });
+  addEventListener('hashchange',()=>{ S.hxHist=false; });
+})();
+render();
+
+/* ===== Guided demo (2026-10-14): a step-by-step tour you do, not just read. Full (every feature) or Quick (pitch length). ===== */
+(function(){
+  const $=(s,root=document)=>root.querySelector(s);
+  const byText=(sel,txt)=>[...document.querySelectorAll(sel)].find(e=>e.textContent.includes(txt));
+  const card=el=>el&&(el.closest('.card,section,.drawer')||el);
+  const SEEN='silangan-tour-v1', OFFERED='silangan-demo-offered';
+  let offeredNow=false;
+  const store={get:k=>{ try{ return localStorage.getItem(k); }catch(e){ return null; } },set:(k,v)=>{ try{ localStorage.setItem(k,v); }catch(e){} }};
+  const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const okLog=()=>(S.hxLogs||[]).some(l=>l.state==='ok');
+  const chat0=()=>S.chat.filter(m=>m.who==='me').length;
+
+  const CH={A:'Why Silangan',B:'Getting started',C:'My electricity',D:'Bill check',N:'Helios on Home',E:'Ways to save',F:'My solar plan',G:'Money',H:'Get it installed',I:'Track my solar',J:'Helios',K:'Free and Plus',L:'City planner',M:'Admin',Z:'Finish'};
+  const needApps=()=>{ if(!S.apps.length){ S.apps=presetApps(PRESETS.find(p=>p.id==='maria')); S.preset='maria'; S.nextId=S.apps.length+1; } S.authed=true; };
+  const needUnlocked=()=>{ if(!H().unlocked) loadSampleHome(); S.authed=true; };
+  const PREP={B:()=>{ freshHome(); S.authed=false; S.onbStep=1; },C:()=>{ S.authed=true; if(!S.fresh&&!S.apps.length) freshHome(); },D:needApps,E:needUnlocked,F:needUnlocked,G:needUnlocked,H:needUnlocked,I:needUnlocked,J:needUnlocked,K:needUnlocked};
+
+  /* r = page, t = what to highlight, task = what the person does, more = what the data means and where it comes from */
+  const STEPS=[
+    {c:'B',q:1,r:'register',t:()=>$('form[data-form=register]'),title:'Sign up',body:'The sample email and password are filled in. The first box is the privacy consent (required). The second lets your anonymous result count in barangay statistics (optional).',
+      more:'<b>Why consent:</b> the Data Privacy Act of 2012 (RA 10173). <br><b>Barangay statistics</b> never show a group smaller than 5 households, so no single home can be picked out.',task:{do:'Press <b>Create account</b>',done:()=>S.route==='onboard'},auto:1,enter:()=>{ if(S.route!=='register'){ freshHome(); S.authed=false; } }},
+    {c:'B',q:1,r:'onboard',t:()=>$('.onb .panel'),title:'Tell us about your household',body:'Household size and barangay. The barangay is how the city sees where solar could grow.',
+      more:'<b>Barangay</b> is required because the city planner view groups results by barangay (Lucena has 33 barangays).',
+      task:{do:'Press <b>Continue</b>',done:()=>S.onbStep>=2},auto:1,
+      quick:{title:'Four quick questions',body:'Four short questions: household, property, roof, and where to start. Answer them or keep the sample answers.',task:{do:'Press <b>Continue</b> three times, then choose <b>Appliance simulation</b>',done:()=>S.route==='appliances'}}},
+    {c:'B',r:'onboard',t:()=>$('.onb .panel'),title:'Your property',body:'Owner or renter, floors, roof type and shade. It also asks if you already have solar: owners skip sizing and go straight to tracking.',
+      more:'<b>Shade</b> lowers how much the panels make. <b>Roof type</b> is passed to installers for the site visit; it doesn\'t change the math.',task:{do:'Press <b>Continue</b>',done:()=>S.onbStep>=3},auto:1},
+    {c:'B',r:'onboard',t:()=>$('.onb .panel'),title:'Describe your roof in two taps',body:'Which way it faces and how steep it is. A guess is fine, and you can skip it.',
+      more:'<b>Why direction matters:</b> a roof facing south catches the most sun in Lucena. An east-facing, low-pitch roof still gets about 99% of that (orientation table, SRS formula D.3).',task:{do:'Pick a direction and pitch, then press <b>Continue</b>',done:()=>S.onbStep>=4},auto:1},
+    {c:'B',r:'onboard',t:()=>$('.onbstart')||$('.onb .panel'),title:'Choose where to start',body:'Appliances first is recommended. You can also start with your bill: we keep it until your appliances are in.',task:{do:'Choose <b>Appliance simulation</b>',done:()=>S.route==='appliances'},auto:1},
+
+    {c:'C',q:1,r:'appliances',t:()=>$('section.card.presets'),hot:()=>$('[data-act=preset][data-arg=maria]'),title:'Put your appliances in your home',body:'Start from the typical home closest to yours. For this demo pick <b>Family with 2 aircons</b>, so it matches the sample bill later.',
+      more:'Each preset is a list of common Lucena appliances with typical hours. You can change everything after. <b>Create your own</b> lets you tap only the appliances you have.<br><br><b>Watts (W)</b> = how much power an appliance draws while it is on. It is printed on its label.',task:{do:'Pick <b>Family with 2 aircons</b>',done:()=>S.apps.length>0},auto:1},
+
+    {c:'C',q:1,r:'appliances',t:()=>$('.usebar')||card($('#appDay')),title:'Your use, in kWh and pesos',body:'Every change you make updates these three numbers: a day, a 30-day month, and the cost.',
+      more:'<b>kWh (kilowatt-hour)</b> is the unit on your Meralco bill. A 1,000-watt appliance running for 1 hour uses 1 kWh.<br><br><b>kWh a day</b> = watts × quantity × hours × (days used ÷ 7) × duty factor ÷ 1,000.<br><b>Duty factor</b> = how much of the time the motor really runs. An aircon compressor switches on and off, so a non-inverter aircon counts 0.80, an inverter aircon 0.60, a refrigerator 0.40 (SRS Appendix D).<br><b>Cost</b> = kWh × ₱14.7424, Meralco\'s residential rate for September 2026.'},
+
+    {c:'C',q:1,r:'appliances',t:()=>$('section.card.ws')||$('#dropHome'),hot:()=>byText('#dropLib .libitem','Laptop'),title:'Drag an appliance into your home',body:'The library on the left has 26 common appliances. Drag one into <b>Your home</b> on the right, or tap it to add. Try the <b>Laptop</b>: it barely changes your total, so the bill check still passes.',
+      more:'Inside <b>Your home</b>, open any appliance to change how many, how many hours, or switch an aircon to inverter. <b>See the math</b> on each one shows its own formula. Watts come from typical nameplate values (DOE energy labels where they exist).',
+      task:{do:'Drag the <b>Laptop</b> into Your home (or tap it)',done:()=>S.apps.some(a=>/laptop/i.test(a.name))},auto:1},
+
+    {c:'C',r:'log',t:()=>card($('.cal')),title:'Daily log',body:'Log the hours you actually used each day. Darker days used more. Helios can also log a day for you by chat.',
+      more:'Free keeps the last 30 days. Plus keeps every day and warns you when your use climbs. A new account starts empty: only days you log appear.'},
+    {c:'C',r:'sim',t:()=>$('main .grid.g3'),title:'Estimated use',body:'Our month estimate from your appliances, what it costs, and your usage type (for example cooling-heavy).',
+      more:'This is the number the bill check compares with your real bill. The <b>Per-appliance breakdown</b> below shows which appliance costs the most.'},
+
+    {c:'D',q:1,r:'bill',t:()=>card($('.jr-bill'))||$('main .card'),title:'Type in one Meralco bill',body:'Here is a sample bill. Copy its <b>kWh</b> and <b>total amount</b> into the form. (You can also upload a photo of a real bill.)',
+      more:'We keep only 4 things from a bill: the period, kWh, amount and utility. Account and meter numbers are never asked for (SRS PRIV-6.1.6).',task:{do:'Type <b>426</b> kWh and <b>6280.26</b> pesos',done:()=>+S.bill.kwh>0&&+S.bill.amount>0}},
+    {c:'D',q:1,r:'bill',t:()=>$('[data-act=confirmBill]'),title:'Now check it',body:'Press the button. We compare your bill with what your appliances say you should have used.',task:{do:'Press <b>Check my bill</b>',done:()=>S.checked&&!S.checking},auto:1,pad:6},
+    {c:'D',q:1,r:'bill',t:()=>$('.unlock-anim')||$('.jr-ready')||$('main .card'),title:()=>H().unlocked?'Your match score':'Almost there',
+      body:()=>H().unlocked?'Your appliances and your bill match, so your solar plan is unlocked and uses <b>your</b> real numbers.':'Your appliance list and your bill are too far apart, so solar stays locked. Go back to <b>My appliances</b>, pick <b>Family with 2 aircons</b> (or fix the hours), then press <b>Check my bill</b> again.',
+      more:'<b>Gap</b> = |our estimate − your bill| ÷ your bill.<br><b>Match score</b> = 100 × (1 − gap ÷ 0.50).<br><b>High</b> 80 or more · <b>Moderate</b> 60 to 79.9 · <b>Low</b> under 60 (locked). SRS formula D.2.',
+      task:{do:'Get a match of 60 or more',done:()=>H().unlocked}},
+    {c:'N',q:1,r:'dash',t:()=>$('.hxb'),hot:()=>$('.hxb [data-act=hxTap]'),title:'Helios sums up your day',body:'Home now starts with a short brief from <b>Helios</b>: how yesterday compares with your usual day, this month so far, and a <b>bill forecast</b>. Below it, log today in one tap.',
+      more:'<b>Bill forecast</b> = your average kWh a day so far this month × 30 days × ₱14.7424/kWh. It is a guide, not your bill.<br><b>One-tap log</b> saves your usual hours for that appliance today; tap it again to undo. The week dots show which days are logged.<br>Type a question in the box and the full Helios page opens. Type what you used (“aircon 5 hours today”) and Helios confirms it right here on Home.',
+      task:{do:'Tap <b>one log chip</b> to log today',done:()=>Object.keys(S.hxTap||{}).length>0},enter:()=>{ S.hxBriefMin=false; }},
+
+    {c:'E',r:'eff',t:()=>$('main .grid.g3'),title:'Ways to save, before you buy panels',body:'Cheaper than any panel. Tick <b>I did this</b> on a tip and see how much smaller your solar system can be.',
+      more:'Helios picks the tips from your own appliances, but the pesos and kWh always come from the calculator, never from the AI. Purchase prices come from the admin price list and are indicative.'},
+
+    {c:'F',q:1,r:'solar',t:()=>$('.card-current')||$('main .grid'),title:'Your recommended solar system',body:'Size in kWp, how many panels, and how much of your yearly use it covers. Slide to try other sizes.',
+      more:'<b>kWp (kilowatt-peak)</b> is the size of a solar system: the panel ratings added up. 6 panels × 550 W = 3.30 kWp.<br><b>Coverage</b> = the share of your yearly use the panels make.<br><b>Performance ratio (0.76)</b> = what is left after real-world losses from heat, wiring and the inverter.<br><br><b>Yearly output</b> = kWp × Lucena\'s 1,860 sun hours a year × roof factor × 0.76.<br>The size is picked to cover your use without sending too much to the grid, because exported solar earns only the ₱9.70 generation charge.'},
+
+    {c:'F',r:'solar',t:()=>$('.roofcard'),title:'Roof check',body:'From your house size, direction and pitch: how many panels fit, and how much the direction costs you. Installers confirm it on the site visit.',
+      more:'<b>Usable roof</b> = about 70% of the roof area, leaving space for edges and walkways. Exact mapping (Find my roof) is future work.'},
+    {c:'F',r:'solar',t:()=>card(byText('main h3','Expected monthly generation')),title:'Month by month',body:'Lucena is sunniest from March to May and cloudiest from June to September. The chart shows what your panels make each month.'},
+
+    {c:'G',q:1,r:'roi',t:()=>$('main .grid.g4'),title:'Savings and payback',body:'What you save in year one, when the system pays for itself, and the total over 25 years.',
+      more:'<b>Payback</b> = the number of years until your savings equal what you paid. Shown as a range (±20%) because prices and weather vary (SRS D.7).<br><b>NPV (net present value)</b> = 25 years of savings minus the cost, in today\'s pesos. A peso saved years from now counts for less than one today.<br><b>Net metering</b> = Meralco\'s program (Renewable Energy Act, RA 9513) where solar you send to the grid earns a credit on your bill.<br><b>Generation charge</b> = the part of the rate you are credited for exported solar, ₱9.7032 per kWh.<br><br>Savings = solar you use × ₱14.74 + solar you export × ₱9.70. The system cost comes from the admin price list per kWp.'},
+
+    {c:'G',r:'fin',t:()=>$('main .grid.g3'),title:'Ways to pay',body:'Government loans (GSIS, Pag-IBIG, SSS), bank solar loans and installer plans, each with the monthly payment worked out for your system.'},
+
+    {c:'H',q:1,r:'next',t:()=>card(byText('main h3','Verified installers'))||card($('[data-in^=qsel]')),title:'Ask up to 3 installers for a quote',body:'These are Lucena installers. Tick one or more.',
+      more:'Silangan sends your results to the installers you pick, so they quote the right size from the start.',task:{do:'Tick an installer',done:()=>S.quotesReq.length>0||S.qSent.length>0},
+      quick:{body:'Silangan sends your results to up to 3 Lucena installers. The family verifies a phone code, then gets a request number like SLG-26-0412.',task:null}},
+    {c:'H',r:'next',t:()=>$('[data-act=drawer][data-arg=consent]'),title:'Open the request',body:'',task:{do:'Press <b>Request quotes</b>',done:()=>S.drawer==='consent'||S.qSent.length>0},auto:1,pad:6,enter:()=>{ if(S.drawer) S.drawer=null; }},
+    {c:'H',r:'next',t:()=>$('.drawer'),title:'Most of it fills itself',body:'Your roof, system size and month-by-month use come from your results. Add roof photos and a few quick taps if you like.',
+      more:'Not included on purpose: exact address, account or meter numbers. Photo locations are removed before sending.',enter:()=>{ if(!S.qSent.length&&S.drawer!=='consent'){ if(!S.quotesReq.length) S.quotesReq=['i1']; S.drawer='consent'; } }},
+    {c:'H',r:'next',t:()=>($('[data-act=qOtp]')||{}).closest?.('.qstep')||$('.drawer'),title:'Verify your phone, then send',body:'Press <b>Verify</b> (the code is simulated here), tick the consent box, then <b>Send request</b>.',
+      more:'<b>Why a phone code:</b> installers pay ₱300 for each qualified request, so the code stops fake and duplicate requests. Wrong numbers and duplicates are credited back automatically.',
+      task:{do:'Send the request',done:()=>S.qSent.length>0},auto:1,enter:()=>{ if(!S.qSent.length&&S.drawer!=='consent'){ if(!S.quotesReq.length) S.quotesReq=['i1']; S.drawer='consent'; } }},
+    {c:'H',r:'next',t:()=>card(byText('main h3','Quote requests you sent'))||$('main .grid'),title:'Sent through Silangan',body:'You see when each installer opens your link. Their quotes come back to your email, and you can compare them here with <b>Add quote</b>.',enter:()=>{ S.drawer=null; }},
+
+    {c:'I',q:1,r:'perf',t:()=>$('main .grid.g3'),title:'Track my solar',body:'After installation, Silangan checks if the panels make what they should. Here it shows sample readings for a 3.30 kWp east-facing system.',
+      more:'<b>PI (performance index)</b> = what the panels made ÷ what they should have made with that month\'s sunshine. 1.00 is perfect. Below 0.80 for 2 months in a row raises an alert.<br><b>Open-Meteo</b> = a free weather service with satellite sunshine data for Lucena.'},
+
+    {c:'I',q:1,r:'perf',t:()=>$('.jr-cause'),title:'Likely cause',body:'When output drops, Silangan says why: weather, dirt, or a fault. Try the examples below the chart.',
+      more:'Sunshine comes from Open-Meteo (satellite data over Lucena). Output down with the sun = weather. Sun normal, slow slide = dirt. Sun normal, sudden drop = fault or new shade.',task:{do:'Optional: tap <b>Dirt</b> or <b>Fault</b>',done:null}},
+    {c:'I',q:1,r:'perf',t:()=>$('.jr-promise'),title:'Savings vs. the installer\'s promise',body:'The monthly savings written on the quote, against what you actually saved, month by month and in total.',
+      more:'Actual savings = solar used × ₱14.74 + solar exported × ₱9.70. If you fall short only because of cloudy weather, it says so, so the installer isn\'t blamed for the sky.',enter:()=>{ S.causeDemo='live'; }},
+
+    {c:'J',r:'ai',t:()=>$('.hxsugg')||$('form.hxcomp'),title:'Helios, your energy assistant',body:'Ask about your bill or your solar results. Every answer shows which of <b>your</b> numbers it used.',
+      more:'Free: 10 questions a month. Plus: unlimited. If Helios is offline, every calculation, chart and report still works.<br><b>Chats</b> (top left) opens your past chats; <b>New chat</b> starts over. Under each answer you can copy it, rate it 👍 or 👎, or ask Helios to <b>explain simpler</b>. While it answers, the send button becomes <b>Stop</b>.',task:{do:'Tap a suggested question',done:()=>chat0()>0}},
+    {c:'J',q:1,r:'ai',t:()=>$('form.hxcomp')||$('form[data-form=chat]'),title:'Log your day by chat',body:'Logging by chat is the easiest way to keep your daily log: just tell Helios, in English or Filipino. Type <b>I used the aircon 4 hours today</b> and press send.',
+      more:'Helios turns your sentence into a log entry and shows a confirm card first. This is the only thing Helios can change. Your bill, appliances, roof, privacy settings and reports stay manual. Log messages don\'t use up free questions.',task:{do:'Type the sentence and send it',done:()=>(S.hxLogs||[]).length>0},auto:1},
+    {c:'J',q:1,r:'ai',t:()=>{ const b=[...document.querySelectorAll('[data-act=suLogOk]')].pop(); return b?(b.closest('.su-lg')||b):($('.su-lg')||$('form.hxcomp')); },hot:()=>[...document.querySelectorAll('[data-act=suLogOk]')].pop(),title:'Now press Confirm',body:'Helios shows exactly what it will save: the appliance, the day, the hours, and the new day total. Nothing is saved until you press <b>Confirm</b>. You can undo it after.',
+      task:{do:'Press <b>Confirm</b> on the card',done:okLog},auto:1},
+
+    {c:'K',r:'plus',t:()=>$('.su-plancmp'),title:'Free for every household',body:'Plus adds more homes, unlimited Helios, the monthly solar check with alerts, and loan-ready reports.',
+      more:'Silangan Plus: ₱99 a month or ₱799 a year, with a 14-day trial. Installers pay ₱300 per qualified request. The city gets a free one-year pilot.'},
+
+    {c:'L',q:1,r:'g-overview',t:()=>$('main .grid.g5'),title:'The city planner\'s view',body:'The same data, anonymous and grouped by barangay: where solar could grow, and which homes need efficiency help first.',
+      more:'<b>Validated household</b> = a home whose bill check passed.<br><b>API (adoption potential index, 0 to 100)</b> = 100 × viable share × (1 − uptake). <b>Viable share</b> is the share of checked homes where solar pays back within 7 years. <b>Uptake</b> is the share that already has solar. A high API means many homes would benefit and few have it yet.<br><b>Unrealized potential (MW)</b> = solar that viable homes could still install. 1 MW = 1,000 kW.<br><br>Only households who opted in are counted, and a barangay with fewer than 5 checked households shows "Insufficient data". It supports the city\'s energy planning under RA 11285 (Energy Efficiency and Conservation Act).'},
+    {c:'L',r:'g-potential',t:()=>$('main .card'),title:'Barangay map',body:'Real barangay outlines. Darker amber = more solar potential. Click one to see its numbers.',
+      more:'Boundaries: PSA PSGC barangay outlines (December 2023). The adoption potential index (API, 0 to 100) is explained in the ⓘ on each chart.'},
+    {c:'L',r:'g-demand',t:()=>$('main .grid.g3'),title:'What help each area needs',body:'Some barangays are ready for a solar program, some need efficiency first, some just need more information.'},
+    {c:'L',q:1,r:'g-scenario',t:()=>card(byText('main h3','Inputs'))||$('main .grid'),title:'Test a subsidy before funding it',body:'Pick a barangay, a subsidy and an adoption rate. See the cost to the city and the solar it adds, as a low, likely and high range.'},
+    {c:'L',r:'g-reports',t:()=>$('.rbuild')||$('main .card'),title:'Reports for the council',body:'Ready-made reports (council briefing, barangay profile) with the map and the numbers.'},
+    {c:'M',r:'admin',t:()=>$('main .card'),title:'Admin console',body:'Rates, prices and formulas are versioned (for example "Constant set 2026.10"), so every result says which numbers it used.'},
+    {c:'Z',q:1,r:null,t:null,title:'That\'s Silangan',body:'From appliances to a checked bill, a solar plan, real quotes and tracking after installation. Now explore on your own, or start the tour again any time with the <b>Guide</b> button.',end:1,enter:()=>{ S.drawer=null; }}
+  ];
+
+  const T={on:false,mode:'full',i:0,list:[],adv:false,moreOpen:false,menu:false,gloss:false,min:false,pos:null,lastKey:''};
+  const GLOSS=[['kWh (kilowatt-hour)','The unit on your Meralco bill. A 1,000-watt appliance running for 1 hour uses 1 kWh.'],['Watts (W)','How much power an appliance draws while it is on. Printed on its label.'],['Duty factor','How much of the time a motor really runs. An aircon compressor switches on and off, so it counts 0.60 to 0.80 of its hours.'],['Meralco rate','₱14.7424 per kWh, Meralco\'s residential rate for September 2026.'],['Bill match score','0 to 100. How close our appliance estimate is to your real bill. 60 or more unlocks solar; 80 or more is High.'],['kWp (kilowatt-peak)','The size of a solar system: the panel ratings added up. 6 × 550 W = 3.30 kWp.'],['Coverage','The share of your yearly use that the panels make.'],['Performance ratio','What is left of the sun\'s energy after heat, wiring and inverter losses. 0.76 here.'],['Payback','Years until your savings equal what you paid for the system.'],['NPV (net present value)','25 years of savings minus the cost, in today\'s pesos.'],['Net metering','Meralco\'s program (RA 9513) where solar you send to the grid earns a credit on your bill.'],['Generation charge','The part of the rate credited for exported solar: ₱9.7032 per kWh.'],['PI (performance index)','Actual output ÷ expected output for the weather. Below 0.80 for 2 months raises an alert.'],['Open-Meteo','A free weather service with satellite sunshine data for Lucena.'],['Validated household','A home whose bill check passed.'],['API (adoption potential index)','0 to 100 per barangay: 100 × viable share × (1 − uptake). High = many homes would benefit and few have solar yet.'],['Viable share','The share of checked homes where solar pays back within 7 years.'],['k = 5','The smallest group the city can see. A barangay with fewer than 5 checked homes shows "Insufficient data".'],['MW (megawatt)','1,000 kW. Used for city-wide solar potential.']];
+  window.TOUR=T;
+  const stepOf=k=>{ const s=T.list[k]; return T.mode==='quick'&&s.quick?{...s,...s.quick}:s; };
+  const val=v=>typeof v==='function'?v():v;
+
+  /* ---------- DOM ---------- */
+  const ring=document.createElement('div'); ring.className='tr-ring'; ring.setAttribute('aria-hidden','true');
+  const shade=document.createElement('div'); shade.className='tr-shade'; shade.setAttribute('aria-hidden','true');
+  const box=document.createElement('div'); box.className='tr-card'; box.setAttribute('role','dialog'); box.setAttribute('aria-label','Guided demo');
+  const launch=document.createElement('div'); launch.className='tr-launch'; launch.hidden=true;
+  document.body.append(shade,ring,box,launch); box.hidden=true; ring.hidden=true; shade.hidden=true;
+
+  function chapters(){ const seen=[]; T.list.forEach((s,k)=>{ if(!seen.find(x=>x.c===s.c)) seen.push({c:s.c,k}); }); return seen; }
+  function drawCard(){
+    const s=stepOf(T.i), n=T.list.length, task=s.task, done=task&&task.done?!!task.done():false, need=task&&task.done&&!done;
+    const ch=chapters(), chi=ch.findIndex(x=>x.c===s.c);
+    box.innerHTML=`<div class="tr-top">${hxOrb(26,s.c==='Z'?'happy':'')}<span class="tr-ch">${s.c==='Z'?'Done':`${chi+1}. ${CH[s.c]}`}</span><span class="tr-n num">${T.i+1} / ${n}</span>
+        <button class="tr-ib tr-words" data-tr="gloss" aria-expanded="${T.gloss}" title="Words to know">Aa</button>${T.pos?`<button class="tr-ib hide-m" data-tr="unpin" title="Put the guide back next to each step">${ic('reset',15)}</button>`:''}<button class="tr-ib" data-tr="min" title="${T.min?'Expand':'Make smaller'}">${ic(T.min?'chevD':'minus',15)}</button><button class="tr-ib" data-tr="menu" aria-expanded="${T.menu}" title="Chapters">${ic('menuI',16)}</button><button class="tr-ib" data-tr="exit" aria-label="Exit the guided demo" title="Exit (Esc)">${ic('x',16)}</button></div>
+      <div class="tr-prog"><i style="width:${(T.i+1)/n*100}%"></i></div><div class="tr-drag xs faint hide-m">${ic('drag',12)} Drag here to move the guide</div>
+      ${T.gloss?`<div class="tr-menu tr-gloss"><b class="xs muted">Words to know</b>${GLOSS.map(([t,d])=>`<div class="tr-g"><b>${t}</b><span>${d}</span></div>`).join('')}</div>`:''}
+      ${T.menu?`<div class="tr-menu"><b class="xs muted">Jump to a chapter</b>${ch.filter(x=>x.c!=='Z').map((x,i)=>`<button data-tr="jump" data-k="${x.k}" class="${x.c===s.c?'on':''}"><span class="num">${i+1}</span>${CH[x.c]}</button>`).join('')}<div class="tr-modes"><button data-tr="mode" data-m="${T.mode==='full'?'quick':'full'}">${T.mode==='full'?'Switch to the quick demo':'Switch to the full tour'}</button></div></div>`:''}
+      <h3>${val(s.title)}</h3>${val(s.body)?`<p>${val(s.body)}</p>`:''}
+      ${task?`<div class="tr-task ${done?'done':''} ${task.done?'':'opt'}"><span class="tr-box">${done?ic('check2',14):task.done?'':ic('spark',12)}</span><span>${done?'Done. ':''}${task.do}</span></div>`:''}
+      ${s.more?`<button class="tr-morebtn" data-tr="more" aria-expanded="${T.moreOpen}">${ic('doc',13)} What this data means <span class="tr-chev">${ic(T.moreOpen?'chevD':'chev',12)}</span></button><div class="tr-more" ${T.moreOpen?'':'hidden'}>${s.more}</div>`:''}
+      ${s.end?`<div class="tr-foot"><button class="btn btn-sm btn-ghost" data-tr="back">${ic('chevL',14)} Back</button><span class="tr-sp"></span><button class="btn btn-sm" data-tr="restart">Start again</button><button class="btn btn-sm btn-primary" data-tr="exit">Explore on my own</button></div>`
+      :`<div class="tr-foot"><button class="btn btn-sm btn-ghost" data-tr="back" ${T.i===0?'disabled':''}>${ic('chevL',14)} Back</button><span class="tr-sp"></span>${need?`<button class="linkbtn xs" data-tr="next">Skip</button>`:''}<button class="btn btn-sm btn-primary ${done?'tr-glow':''}" data-tr="next" ${need?'disabled':''}>${need?'Do the step first':'Next'} ${need?'':ic('arrow',14)}</button></div>`}
+      <div class="tr-keys xs faint hide-m">← → to move · Esc to exit</div>`;
+    T.lastKey=T.i+'|'+done+'|'+T.menu+'|'+T.moreOpen+'|'+val(s.title)+'|'+S.route+'|'+T.gloss+'|'+T.min+'|'+!!T.pos;
+    box.classList.toggle('tr-min',T.min);
+  }
+  function target(){ const s=stepOf(T.i); if(!s.t) return null; if(s.r&&S.route!==s.r) return null; try{ const el=s.t(); return el&&el.getClientRects().length?el:null; }catch(e){ return null; } }
+  let hotEl=null;
+  function setHot(){ const s=stepOf(T.i); let h=null; try{ h=T.on&&s.hot&&(!s.r||S.route===s.r)?s.hot():null; }catch(e){} const done=s.task&&s.task.done&&s.task.done(); if(done) h=null;
+    if(hotEl&&hotEl!==h) hotEl.classList.remove('tr-hot'); if(h) h.classList.add('tr-hot'); hotEl=h; }
+  function pinned(){ if(!T.pos||innerWidth<760) return false; const cw=box.offsetWidth, chh=box.offsetHeight; box.style.left=Math.max(8,Math.min(innerWidth-cw-8,T.pos.x))+'px'; box.style.top=Math.max(8,Math.min(innerHeight-chh-8,T.pos.y))+'px'; return true; }
+  function place(){
+    if(!T.on) return; setHot(); const el=target(), vw=innerWidth, vh=innerHeight, mob=vw<760, s=stepOf(T.i);
+    const wrong=s.r&&S.route!==s.r;
+    box.classList.toggle('tr-mob',mob); document.body.classList.toggle('tr-pad',mob);
+    if(!el){ ring.hidden=true; shade.hidden=false; box.style.left=box.style.top=''; box.classList.toggle('tr-center',!pinned());
+      if(wrong&&!box.querySelector('.tr-away')) box.insertAdjacentHTML('afterbegin',`<div class="tr-away small">You left this step's page. <button class="btn btn-sm btn-primary" data-tr="return">Take me back</button></div>`);
+      return; }
+    box.classList.remove('tr-center'); shade.hidden=true; ring.hidden=false;
+    const r=el.getBoundingClientRect(), p=s.pad||10;
+    const x=Math.max(4,r.left-p), y=Math.max(4,r.top-p), w=Math.min(vw-8,r.right+p)-x, h=Math.min(vh-8,r.bottom+p)-y;
+    Object.assign(ring.style,{transform:`translate(${x}px,${y}px)`,width:Math.max(0,w)+'px',height:Math.max(0,h)+'px'});
+    if(mob){ box.style.left=box.style.top=''; return; }
+    if(pinned()) return;
+    const cw=box.offsetWidth||370, chh=box.offsetHeight||240, g=16; let L,Tp;
+    if(r.right+g+cw<vw-8){ L=r.right+g; Tp=r.top; }
+    else if(r.left-g-cw>8){ L=r.left-g-cw; Tp=r.top; }
+    else if(r.bottom+g+chh<vh-8){ L=r.left+Math.min(r.width,vw)/2-cw/2; Tp=r.bottom+g; }
+    else if(r.top-g-chh>8){ L=r.left+Math.min(r.width,vw)/2-cw/2; Tp=r.top-g-chh; }
+    else { L=vw-cw-20; Tp=vh-chh-20; }
+    L=Math.max(12,Math.min(vw-cw-12,L)); Tp=Math.max(12,Math.min(vh-chh-12,Tp));
+    box.style.left=L+'px'; box.style.top=Tp+'px';
+  }
+  function scroller(el){ let p=el.parentElement; while(p&&p!==document.body&&p!==document.documentElement){ const o=getComputedStyle(p).overflowY; if(/(auto|scroll)/.test(o)&&p.scrollHeight>p.clientHeight+4) return p; p=p.parentElement; } return null; }
+  function scrollToTarget(){ const el=target(); if(!el) return; if(el.classList.contains('drawer')) return;
+    const r=el.getBoundingClientRect(), vh=innerHeight, mob=innerWidth<760, s=stepOf(T.i); let want;
+    if(mob){ const avail=vh-(box.offsetHeight||300)-16, room=avail-70;
+      want=r.height<=room?70+(room-r.height)/2:(s.task&&s.task.done?avail-12-r.height:70); }
+    else { if(r.top>=70&&r.bottom<=vh-20) return; want=r.height>vh*.62?90:(vh-r.height)/2; }
+    const shift=r.top-want, c=scroller(el), beh=RM?'auto':'smooth';
+    if(c) c.scrollBy({top:shift,behavior:beh}); else scrollTo({top:Math.max(0,scrollY+shift),behavior:beh}); }
+  function sync(){ if(!T.on) return; const s=stepOf(T.i), done=s.task&&s.task.done?!!s.task.done():false;
+    const key=T.i+'|'+done+'|'+T.menu+'|'+T.moreOpen+'|'+val(s.title)+'|'+S.route+'|'+T.gloss+'|'+T.min+'|'+!!T.pos;
+    if(key!==T.lastKey){ drawCard(); }
+    place();
+    if(s.auto&&done&&!T.adv){ T.adv=true; setTimeout(()=>{ T.adv=false; const s2=stepOf(T.i); if(T.on&&s2===s||(T.on&&T.list[T.i]===s)) next(); },S.route==='onboard'?700:900); }
+  }
+  function show(k){
+    T.i=Math.max(0,Math.min(T.list.length-1,k)); T.menu=false; T.gloss=false; T.moreOpen=false; T.adv=false;
+    const s=stepOf(T.i); if(s.enter) s.enter();
+    if(s.r&&S.route!==s.r) go(s.r); else render();
+    box.hidden=false; drawCard(); place();
+    setTimeout(()=>{ scrollToTarget(); setTimeout(place,450); },RM?0:260);
+  }
+  function next(){ if(T.i<T.list.length-1) show(T.i+1); }
+  function back(){ if(T.i>0){ let k=T.i-1; show(k); } }
+  function jump(k){ const c=T.list[k].c; if(PREP[c]) PREP[c](); show(k); }
+  const firstOf=f=>STEPS.indexOf(STEPS.find(f));
+  function start(mode,k,ctx){
+    T.mode=mode; T.list=mode==='quick'?STEPS.filter(s=>s.q):STEPS.slice(); T.on=true; closeLaunch();
+    document.body.classList.add('tr-on');
+    const at=i=>{ const s=STEPS[i]; let j=T.list.indexOf(s); if(j<0){ j=T.list.findIndex(x=>STEPS.indexOf(x)>i); } return Math.max(0,j); };
+    if(k!=null) return jump(at(k));
+    if(ctx==='login'){ freshHome(); S.authed=true; S.role='household'; S.onbStep=1; }
+    if(ctx==='reg'||ctx==='login') return show(at(firstOf(s=>s.r==='onboard')));
+    if(!PUBLIC.includes(S.route)) return jump(at(firstOf(s=>s.c==='C')));
+    freshHome(); S.authed=false; S.onbStep=1; S.role='household'; show(0);
+  }
+  function stop(){ if(hotEl){ hotEl.classList.remove('tr-hot'); hotEl=null; } const atEnd=T.on&&T.list[T.i]&&T.list[T.i].end; T.on=false; if(atEnd){ S.role='household'; S.authed=true; go('dash'); } box.hidden=true; ring.hidden=true; shade.hidden=true; document.body.classList.remove('tr-on','tr-pad'); if(S.drawer){ S.drawer=null; render(); } }
+  window.tourStart=start; window.tourStop=stop;
+
+  /* ---------- launcher: first visit popup and the Guide button ---------- */
+  function openLaunch(ctx){ launch.dataset.ctx=ctx||''; const first=!!ctx;
+    const ch=[...new Set(STEPS.map(s=>s.c))].filter(c=>c!=='Z');
+    launch.innerHTML=`<div class="tr-lbg" data-tr="lclose"></div><div class="tr-lcard" role="dialog" aria-modal="true" aria-label="Guided demo">
+      <button class="tr-ib tr-lx" data-tr="lclose" aria-label="Close">${ic('x',18)}</button>
+      ${hxOrb(56,'tr-lhx')}<div class="eyebrow">${ctx==='reg'?'Account created':ctx==='login'?'Welcome back':'Guided demo'}</div><h2>${first?'Want a guided demo?':'How do you want to see Silangan?'}</h2>
+      <p class="muted small">${ctx==='login'?'The demo opens a fresh demo home, as if you just signed up, and walks you through setting it up step by step.':'We walk you through setting up your home from empty, step by step.'} You do each step yourself, and every card explains what the numbers mean and where they come from.</p>
+      <div class="tr-opts">
+        <button class="tr-opt rec" data-tr="go" data-m="full"><span class="tr-oi">${ic('route',22)}</span><b>Full guided tour</b><span class="xs muted">Every feature, ${STEPS.length-1} short steps · about 10 to 12 minutes</span><span class="recb">Recommended</span></button>
+        <button class="tr-opt" data-tr="go" data-m="quick"><span class="tr-oi">${ic('bolt',22)}</span><b>Quick demo</b><span class="xs muted">The highlights in ${STEPS.filter(s=>s.q).length} steps · about 4 to 5 minutes, good for a pitch</span></button>
+        <button class="tr-opt" data-tr="lclose"><span class="tr-oi">${ic('grid',22)}</span><b>Explore on my own</b><span class="xs muted">Skip the tour. The Guide button is always at the top.</span></button></div>
+      <details class="tr-chs"><summary class="small">Or jump to one chapter</summary><div>${ch.map((c,i)=>`<button data-tr="gojump" data-c="${c}"><span class="num">${i+1}</span>${CH[c]}</button>`).join('')}</div></details></div>`;
+    launch.hidden=false; requestAnimationFrame(()=>launch.classList.add('on'));
+  }
+  function closeLaunch(){ const wasOffer=!!launch.dataset.ctx; launch.classList.remove('on'); setTimeout(()=>{ launch.hidden=true; },250); store.set(SEEN,'1');
+    if(wasOffer){ launch.dataset.ctx=''; setTimeout(()=>{ const g=$('header.topbar .tr-guide'); if(g){ g.classList.add('tr-pulse'); setTimeout(()=>g.classList.remove('tr-pulse'),6000); } toast('The guided demo is always here: press Guide at the top.'); },300); } }
+  window.tourOpen=()=>openLaunch('');
+  function guideBtns(){
+    const tb=$('header.topbar'); if(tb&&!tb.querySelector('.tr-guide')){ const b=document.createElement('button'); b.className='tr-guide'; b.dataset.tr='open'; b.innerHTML=`${ic('route',15)}<span>Guide</span>`; const anchor=tb.querySelector('.su-planchip')||tb.querySelector('label'); anchor?anchor.parentNode.insertBefore(b,anchor):tb.appendChild(b); }
+    const nav=$('nav.lnav .row'); if(nav&&!nav.querySelector('.tr-guide')){ const b=document.createElement('button'); b.className='tr-guide'; b.dataset.tr='open'; b.innerHTML=`${ic('route',15)}<span>Guided demo</span>`; nav.prepend(b); }
+  }
+
+  document.addEventListener('click',e=>{ const el=e.target.closest('[data-tr]'); if(!el) return; const a=el.dataset.tr; e.preventDefault();
+    if(a==='open') return openLaunch('');
+    if(a==='lclose') return closeLaunch();
+    if(a==='go') return start(el.dataset.m,null,launch.dataset.ctx);
+    if(a==='gojump'){ const k=STEPS.findIndex(s=>s.c===el.dataset.c); return start('full',k); }
+    if(a==='next') return next(); if(a==='back') return back(); if(a==='exit') return stop();
+    if(a==='restart') return start(T.mode);
+    if(a==='menu'){ T.menu=!T.menu; T.gloss=false; drawCard(); place(); return; }
+    if(a==='gloss'){ T.gloss=!T.gloss; T.menu=false; drawCard(); place(); return; }
+    if(a==='min'){ T.min=!T.min; drawCard(); place(); return; }
+    if(a==='unpin'){ T.pos=null; drawCard(); place(); return; }
+    if(a==='more'){ T.moreOpen=!T.moreOpen; drawCard(); place(); return; }
+    if(a==='jump') return jump(+el.dataset.k);
+    if(a==='mode'){ const cur=T.list[T.i], m=el.dataset.m; T.mode=m; T.list=m==='quick'?STEPS.filter(s=>s.q):STEPS.slice(); let k=T.list.indexOf(cur); if(k<0){ const si=STEPS.indexOf(cur); k=T.list.findIndex(s=>STEPS.indexOf(s)>si); if(k<0) k=T.list.length-1; } return show(k); }
+    if(a==='return'){ const s=stepOf(T.i); if(s.enter) s.enter(); go(s.r); setTimeout(()=>{ scrollToTarget(); },300); }
+  });
+  box.addEventListener('pointerdown',e=>{ if(innerWidth<760||e.button!==0) return; if(!e.target.closest('.tr-top,.tr-drag,.tr-prog')||e.target.closest('button')) return;
+    e.preventDefault(); const r=box.getBoundingClientRect(), dx=e.clientX-r.left, dy=e.clientY-r.top; box.classList.add('tr-dragging');
+    const mv=ev=>{ T.pos={x:ev.clientX-dx,y:ev.clientY-dy}; pinned(); };
+    const up=()=>{ box.classList.remove('tr-dragging'); removeEventListener('pointermove',mv); removeEventListener('pointerup',up); drawCard(); place(); };
+    addEventListener('pointermove',mv); addEventListener('pointerup',up); });
+  document.addEventListener('keydown',e=>{ if(!T.on) return; if(/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;
+    const s=stepOf(T.i), need=s.task&&s.task.done&&!s.task.done();
+    if(e.key==='ArrowRight'&&!need){ e.preventDefault(); next(); }
+    else if(e.key==='ArrowLeft'){ e.preventDefault(); back(); }
+    else if(e.key==='Escape'&&!S.drawer&&!S.modal){ stop(); } });
+  addEventListener('resize',()=>place()); addEventListener('scroll',()=>place(),{passive:true,capture:true});
+  setInterval(()=>{ if(T.on) sync(); },250);
+
+  render=(f=>function(){ f.apply(this,arguments); try{ guideBtns(); if(T.on) requestAnimationFrame(sync); }catch(e){ console.warn('tour',e); } })(render);
+  render();
+  // offered once right after signing up or logging in, never on the landing page
+  let offer=null;
+  document.addEventListener('submit',e=>{ const f=e.target.dataset&&e.target.dataset.form; if(T.on) return; if(f==='register') offer='reg'; if(f==='login') offer='login'; },true);
+  document.addEventListener('click',e=>{ if(T.on) return; const el=e.target.closest('[data-act]'); if(!el) return; if(el.dataset.act==='toOnboard') offer='reg'; if(el.dataset.act==='demo'&&el.dataset.arg==='household') offer='login'; },true);
+  render=(f=>function(){ f.apply(this,arguments); if(offer&&!T.on&&(offer==='reg'?S.route==='onboard':S.route==='dash')){ const c=offer; offer=null; if(offeredNow||store.get(OFFERED)==='1') return; setTimeout(()=>{ if(!T.on&&launch.hidden&&!offeredNow&&store.get(OFFERED)!=='1'){ offeredNow=true; store.set(OFFERED,'1'); openLaunch(c); } },900); } })(render);
+})();
+
+/* ===== round 6: landing "how it works" stepper ===== */
+(function(){
+  const CHK='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+  const _suHow=suHow;
+  suHow=function(){
+    const k=S.howStep||0, html=_suHow();
+    const panel=html.slice(html.indexOf('<div class="su-how"'));
+    const steps=HOW_STEPS.map((x,i)=>{ const st=i<k?'done':i===k?'on':'';
+      return `<li class="h2s ${st}" style="--i:${i}"><button type="button" data-act="suHow" data-arg="${i}" aria-pressed="${i===k}" aria-label="Step ${i+1} of 6: ${x.b}">
+        <span class="h2n">${i<k?CHK:`0${i+1}`}</span>
+        <span class="h2c"><span class="h2i">${ic(x.i,20)}</span><b>${x.b}</b><span class="h2t">${x.s}</span><span class="h2m">${x.t}</span></span>
+      </button></li>`; }).join('');
+    return `<ol class="how2 ${window.__how2Lit?'lit seen':''}" style="--p:${k/5}" aria-label="How it works, 6 steps"><i class="how2-rail" aria-hidden="true"><span class="how2-glow"></span><i></i><span class="how2-dot"></span></i>${steps}</ol>
+      <div class="how2-cap" aria-hidden="true"><span>Step ${k+1} of 6</span><b>${HOW_STEPS[k].b}</b></div>${panel}`;
+  };
+  // light the line once when the steps scroll into view; the moving dot then loops
+  const io=('IntersectionObserver' in window)?new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ window.__how2Lit=true; e.target.classList.add('lit'); io.unobserve(e.target); } }),{threshold:.35}):null;
+  const watch=()=>{ const o=document.querySelector('.how2:not(.lit)'); if(!o) return; if(window.__how2Lit||!io){ o.classList.add('lit','seen'); window.__how2Lit=true; } else io.observe(o); };
+  const _r=render; render=function(){ const out=_r.apply(this,arguments); watch(); return out; };
+  if(document.querySelector(".pipe")) render(); else watch();
+})();
+/* ===== Round 6 (2026-10-15): Helios = Aktis, the sun god with a crown of rays =====
+   One character everywhere: nav, Home brief, Helios page, chat head, chat panel, log tag, unlock card, guided demo.
+   Moods: idle · listening (you type) · thinking (working) · talking (answer appears) · happy (log saved, solar unlocked) · oops (outside its job) · rest (AI offline). */
+(function(){
+  const INK='#3A1A04', MOODS=['idle','listening','thinking','talking','happy','oops','rest'];
+  // shared gradients, defined once for every Helios on the page
+  if(!document.getElementById('hxaDefs')){
+    const d=document.createElement('div'); d.id='hxaDefs'; d.setAttribute('aria-hidden','true'); d.style.cssText='position:absolute;width:0;height:0;overflow:hidden';
+    d.innerHTML=`<svg width="0" height="0" focusable="false"><defs>
+      <radialGradient id="hxaSun" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#FFF4C4"/><stop offset=".35" stop-color="#FFD24A"/><stop offset=".75" stop-color="#FF9F1C"/><stop offset="1" stop-color="#FF6A1F"/></radialGradient>
+      <radialGradient id="hxaFl" gradientUnits="userSpaceOnUse" cx="100" cy="106" r="92"><stop offset=".52" stop-color="#FFF1A8"/><stop offset=".72" stop-color="#FFB020"/><stop offset="1" stop-color="#FF4A1A"/></radialGradient></defs></svg>`;
+    document.body.appendChild(d);
+  }
+  const P=(cx,cy)=>(a,rr)=>`${(cx+Math.cos(a)*rr).toFixed(1)} ${(cy+Math.sin(a)*rr).toFixed(1)}`, R=d=>d*Math.PI/180;
+  function flames(cx,cy,r,len,a0,a1,n,skew){ const p=P(cx,cy), w=R((a1-a0)/(n-1))*.95; let s='';
+    for(let i=0;i<n;i++){ const a=R(a0+(a1-a0)*i/(n-1)), mid=Math.abs(i-(n-1)/2)/((n-1)/2), L=len*(i%2?.72:1)*(1-.3*mid), t=a+skew;
+      s+=`<path class="flame" style="animation-delay:-${(i*.13).toFixed(2)}s" d="M${p(a-w,r-6)} Q${p(a-w*.6+skew*.5,r+L*.55)} ${p(t,r+L)} Q${p(a+w*.7+skew*.4,r+L*.45)} ${p(a+w,r-6)}Z" fill="url(#hxaFl)"/>`; }
+    const fill=`<path d="M${p(R(a0+4),r+5)} A${r+5} ${r+5} 0 1 1 ${p(R(a1-4),r+5)}" fill="none" stroke="url(#hxaFl)" stroke-width="16" stroke-linecap="round"/>`;   // fills the dips between tongues so no background shows
+    return `<g class="flames">${fill}${s}</g>`; }
+  function crown(cx,cy,r,len,n,a0,a1){ const p=P(cx,cy), w=R((a1-a0)/(n-1))*.32; let s='';
+    for(let i=0;i<n;i++){ const a=R(a0+(a1-a0)*i/(n-1)), L=len*(i===(n-1)/2?1.15:1); s+=`<path d="M${p(a-w,r)} L${p(a,r+L)} L${p(a+w,r)}Z"/>`; }
+    const arc=`M${p(R(a0-6),r)} A${r} ${r} 0 0 1 ${p(R(a1+6),r)}`;
+    return `<g class="crown"><g fill="#FFD84D" stroke="#B8650C" stroke-width="2" stroke-linejoin="round">${s}</g><path d="${arc}" fill="none" stroke="#B8650C" stroke-width="9" stroke-linecap="round"/><path d="${arc}" fill="none" stroke="#FFD84D" stroke-width="5" stroke-linecap="round"/></g>`; }
+  function face(cx,cy){ const ex=22, my=cy+22, ink=INK;
+    const eye=x=>`<g class="eye"><ellipse cx="${x}" cy="${cy}" rx="7" ry="9" fill="${ink}"/><g class="pupil"><circle cx="${x+2.5}" cy="${cy-3}" r="2.8" fill="#fff"/><circle cx="${x-2}" cy="${cy+3}" r="1.2" fill="#fff" opacity=".8"/></g></g>`;
+    const arc=x=>`<path class="e-arc" d="M${x-8} ${cy+3} Q${x} ${cy-9} ${x+8} ${cy+3}" fill="none" stroke="${ink}" stroke-width="3.6" stroke-linecap="round"/>`;
+    const shut=x=>`<path class="e-shut" d="M${x-8} ${cy} Q${x} ${cy+7} ${x+8} ${cy}" fill="none" stroke="${ink}" stroke-width="3.4" stroke-linecap="round"/>`;
+    return `${eye(cx-ex)}${eye(cx+ex)}${arc(cx-ex)}${arc(cx+ex)}${shut(cx-ex)}${shut(cx+ex)}
+      <path class="hbL" d="M${cx-ex-10} ${cy-19} L${cx-ex+9} ${cy-14}" stroke="${ink}" stroke-width="4.4" stroke-linecap="round"/><path class="hbR" d="M${cx+ex+10} ${cy-19} L${cx+ex-9} ${cy-14}" stroke="${ink}" stroke-width="4.4" stroke-linecap="round"/>
+      <ellipse cx="${cx-36}" cy="${cy+14}" rx="8" ry="5" fill="#FF6B6B" opacity=".45"/><ellipse cx="${cx+36}" cy="${cy+14}" rx="8" ry="5" fill="#FF6B6B" opacity=".45"/>
+      <path class="m-smile" d="M${cx-10} ${my-3} Q${cx} ${my+7} ${cx+10} ${my-3}" fill="none" stroke="${ink}" stroke-width="3.4" stroke-linecap="round"/>
+      <ellipse class="m-o" cx="${cx}" cy="${my}" rx="4.5" ry="5.5" fill="${ink}"/>
+      <g class="m-talk"><ellipse cx="${cx}" cy="${my}" rx="8" ry="7" fill="${ink}"/><ellipse cx="${cx}" cy="${my+3.5}" rx="4.5" ry="2.6" fill="#FF7A7A"/></g>
+      <g class="m-big"><path d="M${cx-13} ${my-5} Q${cx} ${my-5} ${cx+13} ${my-5} Q${cx+12} ${my+12} ${cx} ${my+12} Q${cx-12} ${my+12} ${cx-13} ${my-5}Z" fill="${ink}"/><ellipse cx="${cx}" cy="${my+7}" rx="6" ry="3.4" fill="#FF7A7A"/></g>
+      <path class="m-wavy" d="M${cx-11} ${my} q2.75 -4 5.5 0 t5.5 0 t5.5 0 t5.5 0" fill="none" stroke="${ink}" stroke-width="3" stroke-linecap="round"/>`; }
+  const star=([x,y])=>`<path class="spark" d="M${x} ${y-10} L${x+3} ${y-3} L${x+10} ${y} L${x+3} ${y+3} L${x} ${y+10} L${x-3} ${y+3} L${x-10} ${y} L${x-3} ${y-3}Z" fill="#FFE27A"/>`;
+  const INNER=`<g class="body">${flames(100,106,52,34,-205,25,17,.18)}<circle cx="100" cy="106" r="52" fill="url(#hxaSun)"/><ellipse cx="80" cy="84" rx="15" ry="8" fill="#fff" opacity=".35" transform="rotate(-25 80 84)"/>${crown(100,106,46,30,7,-150,-30)}${face(100,114)}</g>
+    <g class="dots" fill="#FFC83D"><circle cx="152" cy="40" r="5"/><circle cx="166" cy="32" r="6"/><circle cx="182" cy="22" r="7.5"/></g>${[[30,44],[180,64],[50,174]].map(star).join('')}
+    <path class="sweat" d="M156 70 q-7 11 0 15 q7 -4 0 -15Z" fill="#9FD3FF"/><text class="zz" x="150" y="52" font-size="22" font-weight="700" fill="#FFE9B8" font-family="system-ui,sans-serif">z</text>`;
+
+  // a short-lived mood shared by every "live" Helios (not the ones inside answers)
+  const live=()=>S.aiOffline?'rest':(S.hxMood&&Date.now()<S.hxMoodUntil?S.hxMood:'idle');
+  hxOrb=function(sz,cls=''){ let mood=null; const keep=[];
+    String(cls).split(/\s+/).filter(Boolean).forEach(c=>{ if(c==='breathe'){ if(sz>=72) keep.push('hxa-pulse'); return; } if(c==='think') mood='thinking'; else if(c==='dim') mood='rest'; else if(MOODS.includes(c)) mood=c; else keep.push(c); });
+    const base=!mood; if(!mood) mood=live();
+    return `<span class="hxorb hxa-wrap ${keep.join(' ')}" style="--s:${sz}px" ${base?'data-live="1"':''} aria-hidden="true"><svg class="hxa mo-${mood}${sz<40?' mini':''}" viewBox="8 14 184 184" focusable="false">${INNER}</svg></span>`; };
+  const setMood=(wrap,m)=>{ const s=wrap.querySelector('svg.hxa'); if(!s) return; MOODS.forEach(x=>s.classList.remove('mo-'+x)); s.classList.add('mo-'+m); };
+  window.hxFlash=function(m,ms=2400){ S.hxMood=m; S.hxMoodUntil=Date.now()+ms;
+    document.querySelectorAll('.hxa-wrap[data-live]').forEach(w=>setMood(w,live()));
+    clearTimeout(window.hxFlash.t); window.hxFlash.t=setTimeout(()=>document.querySelectorAll('.hxa-wrap[data-live]').forEach(w=>setMood(w,live())),ms+30); };
+
+  // each answer's avatar shows how that answer went
+  hxMsg=(f=>function(m){ const o=f(m); if(m.who==='me') return o; const t=m.t||''; let mood='idle';
+    if(m.lg){ if(/su-lghd ok/.test(t)) mood='happy'; else if(/I can only|not in your|changed nothing|can't log|Cancelled/.test(t)) mood='oops'; }
+    else if(!m.done) mood='talking'; else if(/^I can only/.test(t)) mood='oops';
+    return o.replace(/class="hxa mo-[a-z]+/,`class="hxa mo-${mood}`).replace(' data-live="1"',''); })(hxMsg);
+
+  // listening while you type to Helios (Home brief, Helios page, chat panel)
+  const box=el=>el&&el.closest&&el.closest('.hxb, .hxmain, .chatpanel');
+  const hear=(inp,on)=>{ const b=box(inp); if(!b||S.aiOffline) return; b.querySelectorAll('.hxa-wrap[data-live]').forEach(w=>{ if(!w.closest('.hxai')) setMood(w,on?'listening':live()); }); };
+  document.addEventListener('input',e=>{ if(e.target.matches&&e.target.matches('input')&&box(e.target)) hear(e.target,!!e.target.value.trim()); });
+  document.addEventListener('focusout',e=>{ if(e.target.matches&&e.target.matches('input')&&box(e.target)) hear(e.target,false); });
+
+  // chat head bubble + chat panel header use Helios too; the panel header talks while it answers
+  chatHead=(f=>function(){ return f().replace(`<img src="${ICON}" alt="">`,hxOrb(42,'hxbub')).replace(`<span class="bot">${ic('spark',18)}</span>`,`<span class="bot hxbot">${hxOrb(32)}</span>`); })(chatHead);
+  chatAsk=(f=>function(q){ const r=f(q); if(q&&q.trim()&&S.route!=='ai'&&!S.aiOffline&&!(S.chat[S.chat.length-1]||{}).lg) hxFlash('talking',2600); return r; })(chatAsk);
+
+  // happy when a log is saved
+  ACT.suLogOk=(f=>function(i){ f(i); hxFlash('happy',2600); })(ACT.suLogOk);
+  ACT.hxTap=(f=>function(a){ const was=Object.keys(S.hxTap||{}).length; f(a); if(Object.keys(S.hxTap||{}).length>was) hxFlash('happy',2400); })(ACT.hxTap);
+  ACT.hxSame=(f=>function(){ f(); hxFlash('happy',2400); })(ACT.hxSame);
+
+  // the Tips note ("Helios picked these") gets Helios instead of a spark icon
+  const SP=`<div class="card ai-note"><div class="row" style="gap:10px;flex-wrap:nowrap">${ic('spark',18)}`;
+  shell=(f=>function(inner){ const h=f(inner); return h.includes(SP)?h.split(SP).join(`<div class="card ai-note"><div class="row" style="gap:10px;flex-wrap:nowrap">${hxOrb(26)}`):h; })(shell);
+})();
+
+/* ===== Round 7 (2026-10-16): "Meet Helios" section on the landing page, after How it works ===== */
+(function(){
+  const PTS=[['chat','Explains your numbers','Your bill, your appliances and your solar plan, in plain words. He answers in the language you write in.'],
+    ['cal','Logs your day by chat','Type “no aircon today” and Helios fills in your daily log. You confirm first, and you can undo.'],
+    ['shield','Never makes up numbers','Every peso and kWh comes from the Silangan calculator. Helios only explains it, and shows which numbers it used.']];
+  const SCENES=['Hi','This month','Bill','Solar','Filipino','Smart log','Limits','More'];
+  const section=()=>`<section class="lsec" id="helios"><div class="eyebrow">Meet Helios</div><h2 class="kin">Your energy guide, <em>rising from the east.</em></h2>
+    <p class="su-sub">Helios is named after the Greek god of the sun, who rises in the east every morning, which is what Silangan means. He knows your bill, your appliances and your solar plan, and explains them in plain words.</p>
+    <div class="lhx-grid">
+      <div class="lhx-stage"><div class="lhx-hero" id="lhxHero" title="Say hi to Helios">${hxOrb(132,'idle hxa-pulse')}</div>
+        <div class="lhx-name"><b>Helios</b><span>Katulong mo sa kuryente</span></div>
+        <ul class="lhx-pts">${PTS.map(([i,t,d])=>`<li><span class="ic">${ic(i,18)}</span><span><b>${t}</b>${d}</span></li>`).join('')}</ul></div>
+      <div class="lhx-chat" aria-label="Sample chat with Helios">
+        <div class="lhx-top">${hxOrb(30,'idle')}<div><b>Helios</b><small>Sample chat · Maria's home</small></div><span class="lhx-dot">Demo</span></div>
+        <div class="lhx-tabs" role="tablist" aria-label="Sample chats">${SCENES.map((x,i)=>`<button type="button" role="tab" data-lhx="${i}" class="${i===0?'on':''}">${x}</button>`).join('')}</div>
+        <div class="lhx-msgs" id="lhxMsgs" aria-live="off"></div>
+        <div class="lhx-in"><span class="t" id="lhxIn"></span><span class="go">${ic('arrow',16)}</span></div></div></div>
+    <div class="lhx-cta"><button class="btn btn-primary btn-lg" data-act="lhxTry">${ic('chat',18)} Try Helios in the demo</button><span class="xs">Free: 10 questions a month · logging by chat is always free</span></div></section>`;
+
+  VIEWS.landing=(f=>function(){ let h=f();
+    h=h.replace('<section class="lsec" id="impact">',section()+'<section class="lsec" id="impact">');
+    h=h.replace('data-arg="how">How it works</a>','data-arg="how">How it works</a><a href="#helios" data-act="scrollTo" data-arg="helios">Helios</a>');   // top menu
+    h=h.replace('data-arg="how">How it works</a><a href="#pricing"','data-arg="how">How it works</a><a href="#helios" data-act="scrollTo" data-arg="helios">Helios</a><a href="#pricing"');   // footer
+    return h; })(VIEWS.landing);
+  ACT.lhxTry=()=>{ ACT.demo('household'); setTimeout(()=>go('ai'),0); };
+
+  // the sample chat: 5 short scenes that take turns while the section is on screen; tap a tab to jump
+  const MOOD=['idle','listening','thinking','talking','happy','oops','rest'];
+  const mood=m=>{ ['#lhxHero','.lhx-top'].forEach(q=>{ const s=document.querySelector(q+' .hxa-wrap svg'); if(!s) return; MOOD.forEach(x=>s.classList.remove('mo-'+x)); s.classList.add('mo-'+m); }); };
+  const setM=(el,m)=>{ const s=el&&el.querySelector('svg.hxa'); if(!s) return; MOOD.forEach(x=>s.classList.remove('mo-'+x)); s.classList.add('mo-'+m); };
+  const box=()=>document.getElementById('lhxMsgs');
+  const add=html=>{ const b=box(); if(!b) return null; const d=document.createElement('div'); d.className='lhx-new'; d.innerHTML=html; b.appendChild(d); while(b.children.length>4) b.removeChild(b.firstElementChild); return d; };
+  const ai=(inner,m='idle')=>`<div class="lhx-ai">${hxOrb(26,m)}<div class="lhx-card">${inner}</div></div>`;
+  const me=t=>`<div class="lhx-me">${t}</div>`;
+  const chips=a=>`<div class="lhx-chips">${a.map(([k,v])=>`<span><b>${k}</b> ${v}</span>`).join('')}</div>`;
+  const logCard=(what,when,from,to)=>`<div class="lhx-log"><div class="hd">Update your daily log?</div><div class="rw"><b>${what}</b><span>${when} · ${from} h → <b>${to} h</b></span></div><div class="btns"><span class="p">Confirm</span><span>Edit</span><span>Cancel</span></div></div>`;
+  const saved=t=>`<div class="lhx-log"><div class="hd ok">✓ Saved to your daily log</div><div class="rw"><span>${t} · via Helios</span></div></div>`;
+  // numbers come from the same calculator as the app, for the sample family (Maria)
+  function nums(){ const keep={apps:S.apps,bill:S.bill,billConfirmed:S.billConfirmed,checked:S.checked,checkSig:S.checkSig,checkLow:S.checkLow,fresh:S.fresh};
+    try{ if(S.fresh||!S.checked){ Object.assign(S,{apps:clone(SAMPLE.apps),bill:clone(SAMPLE.bill),billConfirmed:true,checked:true,checkLow:false,fresh:false}); S.checkSig=appSig(); }
+      const h=H(), r=h.sz.rec;
+      const d0=TODAY.slice(0,8)+'01'; let sum=0,n=0; for(let k=1;k<32;k++){ const key=dShift(k); if(key<d0) break; const v=dayKwh(key); if(v!=null){ sum+=v; n++; } }
+      const avg=n?sum/n:(h.Eday??h.Eyear/365), mon=new Date(TODAY+'T00:00').toLocaleString('en',{month:'short'});
+      return {mon,mkwh:fmt.n(Math.round(sum)),mpeso:fmt.n(Math.round(sum*K.R_RETAIL)),mdays:n,avg:avg.toFixed(1),fc:fmt.n(Math.round(avg*30*K.R_RETAIL/10)*10),N:r.N,kwp:r.kwp.toFixed(2),pb:r.pb.toFixed(1),cov:(r.cov*100).toFixed(0),gen:fmt.n(Math.round(r.gen)),s1:fmt.n(Math.round(r.s1/100)*100),use:fmt.n(Math.round(h.Eyear))};
+    }catch(e){ return {mon:'Oct',mkwh:'75',mpeso:'1,111',mdays:5,avg:'15.0',fc:'6,670',N:6,kwp:'3.30',pb:'3.1',cov:'89',gen:'4,612',s1:'56,500',use:'5,183'}; } finally{ Object.assign(S,keep); } }
+  let run=0, visible=false, scene=0, V=null;
+  const wait=ms=>new Promise(r=>setTimeout(r,ms));
+  async function type(txt,id){ const el=document.getElementById('lhxIn'); if(!el) return false; el.classList.add('typing'); mood('listening');
+    for(let i=1;i<=txt.length;i++){ if(run!==id||!document.getElementById('lhxIn')) return false; el.textContent=txt.slice(0,i); await wait(32); }
+    await wait(220); el.textContent=''; el.classList.remove('typing'); return true; }
+  async function stream(el,html,id){ const words=html.split(/(\s+)/); for(let i=1;i<=words.length;i+=2){ if(run!==id) return false; el.innerHTML=words.slice(0,i).join(''); await wait(38); } el.innerHTML=html; return true; }
+  async function ask(q,id){ if(!await type(q,id)) return null; add(me(q)); return true; }
+  async function think(steps,id,ms=1100){ mood('thinking'); const t=add(ai(`<div class="lhx-steps">${steps.map(s=>`<span><i></i>${s}</span>`).join('')}</div>`,'thinking')); await wait(ms); if(t) t.remove(); return run===id; }
+  async function answer(html,extra,id,m='idle'){ mood('talking'); const a=add(ai('<span class="tx"></span>','talking')); if(!a) return null; if(!await stream(a.querySelector('.tx'),html,id)) return null;
+    if(extra) a.querySelector('.tx').insertAdjacentHTML('afterend',extra); setM(a,m); mood(m); return a; }
+  async function confirm(card,done,id){ const lg=add(ai(card)); await wait(1000); if(run!==id||!lg) return false; const p=lg.querySelector('.p'); p.classList.add('press'); await wait(260);
+    lg.querySelector('.lhx-card').innerHTML=done; setM(lg,'happy'); mood('happy'); await wait(1500); return run===id; }
+  const SC=[
+    async id=>{ // Hi: a friendly hello
+      if(!await ask('Hi Helios!',id)) return; mood('happy'); await wait(450); if(run!==id) return;
+      await answer('Hi Maria! I\'m <span class="hl">Helios</span>, your energy guide. I know your bill, your appliances and your solar plan. Ask me anything, or tell me what you used today.','',id,'happy'); await wait(1500); },
+    async id=>{ // This month: use so far, then the expected bill
+      if(!await ask(`How much have I used since ${V.mon} 1?`,id)||!await think(['Reading your daily log'],id,900)) return;
+      if(!await answer(`Since ${V.mon} 1 you've used <span class="hl">${V.mkwh} kWh</span>, about <span class="hl">₱${V.mpeso}</span>, over ${V.mdays} logged days. That's ${V.avg} kWh a day.`,chips([['Daily log',`${V.mdays} days`],['Rate','₱14.7424/kWh']]),id)) return;
+      await wait(1300); if(!await ask("What's my expected bill this month?",id)||!await think(['Calculating your forecast'],id,900)) return;
+      await answer(`About <span class="hl">₱${V.fc}</span>. I take your ${V.avg} kWh a day so far, stretch it to 30 days and multiply by ₱14.7424/kWh. It's a guide, not your bill.`,chips([['Forecast',`≈ ₱${V.fc}`]]),id); },
+    async id=>{ // 1 Bill: explain + log by chat
+      if(!await ask('Why is my bill high?',id)||!await think(['Reading your bill','Checking your appliances'],id)) return;
+      if(!await answer('Your aircon is the main reason. Cooling is <span class="hl">68.8%</span> of your estimated use. At <span class="hl">₱14.7424/kWh</span>, every hour you cut saves money right away.',chips([['Your bill','426 kWh'],['Rate','₱14.7424/kWh']]),id)) return;
+      await wait(1300); if(!await ask('no aircon today',id)) return; mood('idle');
+      await confirm(logCard('Aircon 1.0 HP','today',8,0),saved('Aircon 1.0 HP: 0 h today'),id); },
+    async id=>{ // 2 Solar: answer, then Explain simpler
+      if(!await ask(`Is ${V.N} panels enough?`,id)||!await think(['Checking your solar plan','Calculating coverage'],id)) return;
+      const a=await answer(`${V.N} panels (<span class="hl">${V.kwp} kWp</span>) make about ${V.gen} kWh a year, which covers <span class="hl">${V.cov}%</span> of your use. One more panel would mostly make surplus, which Meralco credits at only ₱9.7032/kWh.`,chips([['Solar plan',`${V.kwp} kWp`],['Yearly use',`${V.use} kWh`]])+'<div class="lhx-tools"><span class="ex">Explain simpler</span></div>',id); if(!a) return;
+      await wait(1400); if(run!==id) return; const ex=a.querySelector('.ex'); ex.classList.add('press'); await wait(300);
+      await answer(`In short: yes. ${V.N} panels cover about <span class="hl">9 of every 10 kWh</span> your home uses. More panels would earn less, so ${V.N} is the sweet spot.`,'',id,'happy'); },
+    async id=>{ // 3 Filipino
+      if(!await ask('Sulit ba ang solar sa amin?',id)||!await think(['Tinitingnan ang solar plan mo'],id,900)) return;
+      if(!await answer(`Oo, sulit. Ang ${V.N} na panel (<span class="hl">${V.kwp} kWp</span>) ay babayaran ang sarili nito sa mga <span class="hl">${V.pb} taon</span>, at makakatipid kayo ng mga <span class="hl">₱${V.s1}</span> sa unang taon.`,chips([['Solar plan',`${V.kwp} kWp`],['Payback',`${V.pb} taon`]]),id,'happy')) return;
+      await wait(1500); if(!await ask('English please',id)) return; mood('thinking'); await wait(600); if(run!==id) return;
+      await answer(`Sure! In short: yes, it's worth it. ${V.N} panels pay for themselves in about <span class="hl">${V.pb} years</span> and save about <span class="hl">₱${V.s1}</span> in the first year. I'll keep answering in English.`,'',id,'happy'); },
+    async id=>{ // 4 Smart log: Taglish, asks for the missing hours, logs yesterday
+      if(!await ask('naka-aircon kami kagabi',id)) return; mood('thinking'); await wait(700); if(run!==id) return;
+      if(!await answer('Ilang oras naka-on ang aircon kagabi? Halimbawa “3 hours”, o “wala”.','',id)) return;
+      await wait(900); if(!await ask('mga 5 hours',id)) return; mood('idle');
+      await confirm(logCard('Aircon 1.0 HP','yesterday',8,5),saved('Aircon 1.0 HP: 5 h yesterday'),id); },
+    async id=>{ // 5 Limits: off-topic questions, a future date, then something outside its job
+      if(!await ask('what is 10 + 10?',id)) return; mood('thinking'); await wait(600); if(run!==id) return;
+      if(!await answer('I can only help with your electricity and solar in Silangan, so no math homework from me. Try “Why is my bill high?”','',id,'oops')) return;
+      await wait(1300); if(!await ask("what's the recipe for adobo?",id)) return; mood('thinking'); await wait(600); if(run!==id) return;
+      if(!await answer('Recipes are outside what I do. But if you cooked it on the induction stove, tell me how long and I\'ll log it.','',id,'oops')) return;
+      await wait(1300); if(!await ask('log aircon 6 hours tomorrow',id)) return;
+      if(!await answer('I can only log <span class="hl">today or the past 7 days</span>, not future days.','',id,'oops')) return;
+      await wait(1500); if(!await ask('change my bill to 300 kWh',id)) return;
+      await answer('I can only update your daily log. You can change your bill in <span class="hl">My electricity → Bill check</span>.','',id,'oops'); },
+    async id=>{ // More: what else Helios can do
+      if(!await ask('Hi Helios, what else can you do?',id)) return; mood('thinking'); await wait(600); if(run!==id) return;
+      await answer('Two things. I <b>explain</b> any number in Silangan in plain words, using only your own results, including “what if” changes like an inverter aircon. And I <b>log your day</b> when you tell me what you used. Write in English, Filipino or Taglish, and I answer the same way. Try me in the demo below!','',id,'happy'); await wait(1500); }
+  ];
+  const tabs=i=>document.querySelectorAll('.lhx-tabs [data-lhx]').forEach(b=>{ const on=+b.dataset.lhx===i; b.classList.toggle('on',on); b.setAttribute('aria-selected',on); });
+  async function play(id,start){ scene=start;
+    while(run===id&&box()&&visible){ tabs(scene); box().innerHTML=''; mood('idle'); await wait(450); if(run!==id) return;
+      await SC[scene](id); if(run!==id) return; await wait(1800); if(run!==id) return; mood('idle'); scene=(scene+1)%SC.length; } }
+  const STILL=[me('Hi Helios!')+ai('Hi Maria! I\'m <span class="hl">Helios</span>, your energy guide. Ask me anything, or tell me what you used today.','happy'),
+    ()=>me(`How much have I used since ${V.mon} 1?`)+ai(`<span class="hl">${V.mkwh} kWh</span>, about ₱${V.mpeso}, over ${V.mdays} logged days.`)+me("What's my expected bill this month?")+ai(`About <span class="hl">₱${V.fc}</span>. It's a guide, not your bill.`),
+    me('Why is my bill high?')+ai('Your aircon is the main reason. Cooling is <span class="hl">68.8%</span> of your estimated use.'),
+    ()=>me(`Is ${V.N} panels enough?`)+ai(`${V.N} panels (<span class="hl">${V.kwp} kWp</span>) cover <span class="hl">${V.cov}%</span> of your yearly use.`),
+    ()=>me('Sulit ba ang solar sa amin?')+ai(`Oo, sulit. Babayaran ang sarili nito sa mga <span class="hl">${V.pb} taon</span>.`)+me('English please')+ai(`Sure! It pays for itself in about <span class="hl">${V.pb} years</span>.`,'happy'),
+    me('naka-aircon kami kagabi')+ai('Ilang oras naka-on ang aircon kagabi?')+me('mga 5 hours')+ai(saved('Aircon 1.0 HP: 5 h yesterday'),'happy'),
+    me('what is 10 + 10?')+ai('I can only help with your electricity and solar in Silangan.','oops')+me("what's the recipe for adobo?")+ai('Recipes are outside what I do.','oops')+me('change my bill to 300 kWh')+ai('I can only update your daily log. You can change your bill in <span class="hl">My electricity → Bill check</span>.','oops'),
+    me('Hi Helios, what else can you do?')+ai('I <b>explain</b> any number in Silangan and <b>log your day</b> by chat, in the language you write in.','happy')];
+  function still(i){ const b=box(); if(!b) return; tabs(i); const x=STILL[i]; b.innerHTML=typeof x==='function'?x():x; }
+  const reduce=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const io=('IntersectionObserver' in window)?new IntersectionObserver(es=>es.forEach(e=>{ visible=e.isIntersecting;
+    if(visible&&!reduce()){ const id=++run; play(id,scene); } else if(!visible){ run++; } }),{threshold:.3}):null;
+  function watch(){ const s=document.getElementById('helios'); if(!s||s.dataset.lhx) return; s.dataset.lhx='1'; V=nums();
+    s.querySelectorAll('.lhx-tabs [data-lhx]').forEach(b=>b.addEventListener('click',()=>{ const i=+b.dataset.lhx; if(reduce()||!io){ still(i); return; } scene=i; const id=++run; visible=true; play(id,i); }));
+    if(reduce()||!io){ still(0); return; } io.observe(s);
+    const hero=document.getElementById('lhxHero'); hero.addEventListener('mouseenter',()=>{ const sv=hero.querySelector('svg.hxa'); if(!sv) return; const was=[...sv.classList].find(c=>c.startsWith('mo-')); mood('happy'); setTimeout(()=>{ if(sv.classList.contains('mo-happy')&&was) mood(was.slice(3)); },1300); }); }
+  render=(f=>function(){ run++; if(io) io.disconnect(); const out=f.apply(this,arguments); watch(); return out; })(render);
+  if(S.route==='landing') render(); else watch();
+})();
+
+/* ---------- Helios answers in the language you write in (no language buttons) ---------- */
+(()=>{
+  const FILW=/\b(ang|ng|mga|ba|ko|mo|namin|amin|natin|kami|ako|bakit|paano|magkano|ilan|ilang|sulit|mahal|po|lang|yung|kasi|naman|ito|ano|kung|hindi|wala|meron|sapat|ngayon|ngayong|kagabi|kahapon|tipid|babayaran|buwan|taon|nagamit)\b/gi;
+  const isFil=q=>{ const n=(q.match(FILW)||[]).length, w=q.trim().split(/\s+/).length; return n>=2||(n>=1&&w<=3); };
+  const askEN=q=>/\b(in|sa|use|speak|answer|reply|talk)\b[^.?!]*\benglish\b|\benglish\s*(please|pls|na lang|lang|po)\b|^\s*english\s*[?!.]*\s*$/i.test(q);
+  const askFIL=q=>/\b(in|sa|use|speak|answer|reply|talk)\b[^.?!]*\b(tagalog|filipino)\b|\b(tagalog|filipino)\s*(please|pls|na lang|lang|po)\b|mag-?tagalog/i.test(q);
+  /* questions outside Helios's job: math, recipes, trivia, homework, jokes */
+  const OFF=/\d+\s*[-+*×x÷\/]\s*\d+|recipe|adobo|sinigang|luto|cook(?!ed)|joke|biro|song|kanta|homework|assignment|essay|poem|tula|who is|sino si|president|pangulo|basketball|movie|pelikula|capital of/i;
+  const langOf=q=>S.hxLangX||(isFil(q)?'FIL':'EN');
+  delete S.hxLang;
+
+  /* the same numbers, said in Filipino (Taglish-friendly) */
+  const cites=t=>t.match(/<span class="cite">[\s\S]*?<\/span>/g)||[];
+  const FIL=[
+    [/^Your aircon is the main reason/,(c)=>`Ang aircon ang pangunahing dahilan. Ang pagpapalamig ay ${c[0].replace("cooling ","")} ng tantiyang konsumo mo. Sa ${c[1]}, bawat oras na mabawas mo dito ay tipid agad.`],
+    [/^(\d+) panels \(/,(c,m)=>`Ang ${m[1]} na panel (${c[0]}) ay gagawa ng mga ${c[1]}, sapat sa ${c[2]} ng konsumo mo sa isang taon. Kung magdadagdag pa ng isa, halos puro sobra na ang magagawa nito, at ${c[3]} lang ang credit ng Meralco diyan.`],
+    [/^Switching both aircons/,(c)=>`Kung gagawin mong inverter ang dalawang aircon, makakatipid ka ng mga ${c[0]}, katumbas ng ${c[1]}. Sa ${c[2]} para sa dalawang unit, mababawi mo ito sa mga 5 taon, at puwedeng lumiit ang solar na kailangan mo.`],
+    [/^Solar you use yourself/,(c)=>`Ang solar na ginagamit mo mismo ay tipid na buong ${c[0]}. Ang sobra ay napupunta sa Meralco at may credit na ${c[1]}. Ang hindi nagamit na credit ay nadadala sa susunod na bill.`],
+    [/^I take your average so far/,(c)=>`Kinukuha ko ang average mo ngayong buwan, ${c[0]}, ginagawang 30 araw, tapos minu-multiply sa ${c[1]}. Lalabas na mga ${c[2]}. Gabay lang ito, hindi pa ang totoong bill mo.`],
+    [/^I can only answer from your Silangan results/,(c,m,q)=>c.length>=2
+      ? (/sulit|worth/i.test(q)?`Oo, sulit para sa inyo. Ang ${c[0]} na sistema ay babayaran ang sarili nito sa mga ${c[1]}.`:`Mula lang sa mga resulta mo sa Silangan ako sumasagot. Sa ngayon, ang mungkahing sistema mo ay ${c[0]} na mababawi sa mga ${c[1]}. Subukan ang isa sa mga mungkahi.`)
+      : `Mula lang sa mga resulta mo sa Silangan ako sumasagot, at wala pang sukat ang solar mo. Tapusin muna ang bill check.`],
+  ];
+
+  hxAnswer=(f=>function(q){
+    if(askEN(q)){ S.hxLangX='EN'; return {t:`Sure. I'll answer in English for the rest of this chat.`,used:[],act:[]}; }
+    if(askFIL(q)){ S.hxLangX='FIL'; return {t:`Sige! Sa Filipino na ako sasagot hanggang matapos ang chat na ito.`,used:[],act:[]}; }
+    if(OFF.test(q)) return langOf(q)==='FIL'
+      ? {t:`Hindi ko 'yan sakop. Ang kaya ko lang ay ipaliwanag ang mga numero mo sa Silangan (bill, appliances at solar plan) at i-log ang araw mo. Subukan ang “Bakit mataas ang bill ko?”`,used:[],act:[]}
+      : {t:`I can only help with your electricity and solar in Silangan: explaining your bill, appliances and solar plan, and logging your day. That question is outside what I do. Try “Why is my bill high?”`,used:[],act:[]};
+    const q2=/expected|this month|ngayong buwan|babayaran|magkano.*bill/i.test(q)?'forecast':q;
+    const a=f(q2); if(langOf(q)!=='FIL'||!a||!a.t) return a;
+    for(const [re,fn] of FIL){ const m=a.t.match(re); if(m){ const c=cites(a.t); return {...a,t:fn(c,m,q)}; } }
+    return a; })(hxAnswer);
+  hxSteps=(f=>function(q){
+    if(askEN(q)||askFIL(q)||OFF.test(q)) return [];
+    const st=f(/expected|this month|ngayong buwan|babayaran|magkano.*bill/i.test(q)?'forecast':q);
+    return langOf(q)==='FIL'?st.map((s,i)=>i?'Kinukuwenta':'Tinitingnan ang data mo'):st; })(hxSteps);
+
+  /* no language buttons; a new chat goes back to matching how you write */
+  VIEWS.ai=(f=>function(){ return f().replace(/<div class="seg sm hxlang"[\s\S]*?<\/div>/,'')
+    .replace('<p class="xs faint hxdisc">AI answers can be wrong.','<p class="xs faint hxdisc">Helios answers in the language you write in. AI answers can be wrong.'); })(VIEWS.ai);
+  const _new=ACT.hxNew, _open=ACT.hxOpen;
+  ACT.hxNew=()=>{ S.hxLangX=null; _new(); };
+  ACT.hxOpen=id=>{ S.hxLangX=null; _open(id); };
+  delete ACT.hxLang;
+  /* asking for a language is free, like logs */
+  chatAsk=(f=>function(q){ if((askEN(q)||askFIL(q))&&S.hxUsed>0) S.hxUsed--; return f(q); })(chatAsk);
 })();
 
 </script>
